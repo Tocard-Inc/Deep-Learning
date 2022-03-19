@@ -70,7 +70,7 @@ def start_game(device, users):
 
 
 def disable_notifications(device):
-    device.shell("adb shell settings put global heads_up_notifications_enabled 0")
+    device.shell("settings put global heads_up_notifications_enabled 0")
     logging.debug("disabled heads up notificaiton")
 
 
