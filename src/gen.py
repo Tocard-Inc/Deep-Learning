@@ -1,8 +1,11 @@
+from time import sleep
 from ppadb.client import Client as AdbClient
 import re
 import logging
 
 REGEX_USER = re.compile(r"UserInfo\{([0-9]*):([a-zA-Z ]*):.*")
+REGEX_FOCUS = re.compile(r"mFocused.*com.Psyonix.RL2D.*")
+
 PSYONIX_PACKAGE_NAME = "com.Psyonix.RL2D"
 PSYONIX_ACTIVITY_NAME = "com.epicgames.ue4.SplashActivity"
 
@@ -69,9 +72,18 @@ def start_game(device, users):
     logging.debug("game activity started")
 
 
-def disable_notifications(device):
-    device.shell("settings put global heads_up_notifications_enabled 0")
-    logging.debug("disabled heads up notificaiton")
+def set_notifications(device, enabled: bool):
+    device.shell(f"settings put global heads_up_notifications_enabled {int(enabled)}")
+    if enabled:
+        logging.debug("enabled heads up notificaiton")
+    else:
+        logging.debug("disabled heads up notificaiton")
+
+
+def detect_focus(device) -> bool:
+    activity_dump = device.shell("dumpsys activity activities")
+    result = REGEX_FOCUS.search(activity_dump)
+    return result is not None
 
 
 if __name__ == "__main__":
@@ -84,4 +96,9 @@ if __name__ == "__main__":
 
     start_game(device, users)
 
-    disable_notifications(device)
+    set_notifications(device, False)
+
+    while detect_focus(device):
+        sleep(1)
+
+    set_notifications(device, True)
