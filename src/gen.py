@@ -74,6 +74,7 @@ def start_game(device, users):
 
 def set_notifications(device, enabled: bool):
     device.shell(f"settings put global heads_up_notifications_enabled {int(enabled)}")
+
     if enabled:
         logging.debug("enabled heads up notificaiton")
     else:
