@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Poetry install",
+      "type": "shell",
+      "command": "$HOME/.local/bin/poetry install",
+      "problemMatcher": []
+    }
+  ]
+}
