@@ -1,7 +1,8 @@
-from time import sleep
-from ppadb.client import Client as AdbClient
-import re
 import logging
+import re
+from time import sleep
+
+from ppadb.client import Client as AdbClient
 
 REGEX_USER = re.compile(r"UserInfo\{([0-9]*):([a-zA-Z ]*):.*")
 REGEX_FOCUS = re.compile(r"mFocused.*com.Psyonix.RL2D.*")

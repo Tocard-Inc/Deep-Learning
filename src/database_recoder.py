@@ -1,7 +1,8 @@
-from subprocess import call
+import logging
 from time import sleep
-import numpy as np
 
+import numpy as np
+from ppadb.client import Client as AdbClient
 
 center = (1000, 500)
 
