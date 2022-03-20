@@ -105,11 +105,11 @@ def nextModel(n):
     tap(SELECT_CAR_BTN)
 
 
-def newCar(s=-1, w=-1, h=-1, c=-1, p=-1.0, a=-1.0, n=-1):
+def newCar(s=-1, w=-1, h=-1, c=-1, p=-1.0, a=-1.0, n=0):
     tap(GARAGE)
     sleep(DELAY)
 
-    if n != 0:
+    if n:
         nextModel(n)
         sleep(DELAY)
 
@@ -159,22 +159,22 @@ for ip in range(3):
                     # model
                     for nm, ns in enumerate(Nsticker):
                         logging.debug("model")
-                        newCar(-1, -1, -1, c, p, a, 0)
+                        newCar(c=c, p=p, a=a)
 
                         # sticker
                         for s in range(ns):
                             logging.debug("sticker")
-                            newCar(s, -1, -1, -1, 0.0, 0.0, 0)
+                            newCar(s=s)
 
                             # wheel
                             for w in range(Nwheel):
                                 logging.debug("wheel")
-                                newCar(-1, w, -1, -1, 0.0, 0.0, 0)
+                                newCar(w=w)
 
                                 # hat
                                 for h in range(Nhat):
                                     logging.debug("hat")
-                                    newCar(-1, -1, h, -1, 0.0, 0.0, 0)
+                                    newCar(h=h)
 
                                     # rotate
                                     for i in range(Nrot_v):
@@ -184,11 +184,5 @@ for ip in range(3):
                                         rotate(0, 100)
                         # next model
                         newCar(
-                            -1,
-                            -1,
-                            -1,
-                            -1,
-                            -1,
-                            -1,
-                            1 if nm != len(Nsticker) - 1 else 1 - len(Nsticker),
+                            n=1 if nm != len(Nsticker) - 1 else 1 - len(Nsticker),
                         )
