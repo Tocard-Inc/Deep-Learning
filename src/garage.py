@@ -1,5 +1,6 @@
 import itertools
 import logging
+from curses.ascii import DEL
 from subprocess import call
 from time import sleep
 
@@ -18,7 +19,6 @@ BACK_BTN = (50, 50)
 
 COLOR_MIN = 375
 COLOR_MAX = 715
-COLOR_CENTER = (COLOR_MIN + COLOR_MAX) // 2
 COLOR_DIST = COLOR_MAX - COLOR_MIN
 TEAM_OFFSET = 250
 PRIMARY_COLOR_SLIDER = (290, 290 + TEAM_OFFSET)
@@ -33,7 +33,7 @@ NB_WHEELS = 19
 NB_HATS = 22
 NB_TEAMS = 2
 
-DELAY = 0.08
+DELAY = 0.15
 
 NB_PRIMARY_COLORS = 5
 NB_SECONDARY_COLORS = 5
@@ -70,23 +70,20 @@ def setColor(team: int, primary_color: float, secondary_color: float):
     # set primary color, if necessary
     if primary_color != old_primary_color:
         motion((COLOR_MIN + old_primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "DOWN")
-        motion((COLOR_MIN + old_primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "MOVE")
         motion((COLOR_MIN + primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "MOVE")
         motion((COLOR_MIN + primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "UP")
 
     # set secondary color, if necessary
     if secondary_color != old_secondary_color:
         motion((COLOR_MIN + old_secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "DOWN")
-        motion((COLOR_MIN + old_secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "MOVE")
         motion((COLOR_MIN + secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "MOVE")
         motion((COLOR_MIN + secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "UP")
 
 
 def rotate(x, y):
-    sleep(2)
     motion(CENTER, "DOWN")
-    motion(CENTER, "MOVE")
     motion(np.array(CENTER) + np.array((x, y)), "MOVE")
+    sleep(DELAY)
     motion(np.array(CENTER) + np.array((x, y)), "UP")
 
 
@@ -130,6 +127,8 @@ def newCar(wheel: int, hat: int, team: int, primary_color: float, secondary_colo
     global old_primary_color
     global old_secondary_color
     global old_team
+
+    sleep(0.5)
 
     # goto garage menu
     tap(GARAGE_BTN)

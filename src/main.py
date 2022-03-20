@@ -26,14 +26,15 @@ if __name__ == "__main__":
     set_notifications(device, False)
 
     loadouts = generate_loadouts()
-    rotations = generate_rotations()
+    NB_ROTATIONS = 20
 
     while detect_focus(device):
         for (wheel, hat, team, primary_color, secondary_color) in loadouts:
             logging.debug(f"next loadout: {(wheel, hat, team, primary_color, secondary_color)}")
             newCar(wheel, hat, team, primary_color, secondary_color)
 
-            # for (horizontal_rotation, vertical_rotation) in rotations:
-            #     rotate(horizontal_rotation, vertical_rotation)
+            sleep(0.5)
+            for _ in range(NB_ROTATIONS):
+                rotate(130, 0)
 
     set_notifications(device, True)
