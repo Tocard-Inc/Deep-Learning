@@ -1,3 +1,4 @@
+import itertools
 import logging
 from subprocess import call
 from time import sleep
@@ -11,7 +12,7 @@ GARAGE = (340, 980)
 EDIT_LOADOUT_BTN = (1950, 850)
 SELECT_CAR_BTN = (1950, 980)
 
-BACK_BTN = (70, 60)
+BACK_BTN = (50, 50)
 
 itemX = (200, 450, 700)
 itemY = (300, 580, 860)
@@ -29,17 +30,19 @@ color_max = 708
 color_center = (color_min + color_max) / 2
 color_dist = color_max - color_min
 
-Nsticker = [2, 2]  # [3, 3, 8, 9]
-Nwheel = 19
-Nhat = 22
+# Nsticker = [2, 2]  # [3, 3, 8, 9]
+NB_STICKERS = 2
+NB_WHEELS = 19
+NB_HATS = 22
+NB_TEAMS = 2
 
-DELAY = 0.5
+DELAY = 0.1
 
-Ncolor_p = 1  # 3
-Ncolor_a = 1  # 3
+NB_PRIMARY_COLORS = 1  # 3
+NB_SECONDARY_COLORS = 1  # 3
 
-Nrot_h = 1  # 3
-Nrot_v = 1  # 3
+NB_HORIZONTAL_ROTATIONS = 1  # 3
+NB_VERTICAL_ROTATIONS = 1  # 3
 
 
 def tap(pos):
@@ -139,50 +142,34 @@ def newCar(s=-1, w=-1, h=-1, c=-1, p=-1.0, a=-1.0, n=0):
     sleep(DELAY)
 
 
-# principal color dicho
+# primary color dicho
+primary_colors = []
 for ip in range(3):
     ori_p = 1 / 2 ** (ip + 1)
     dec_p = 1 / 2**ip
     for jp in range(2**ip):
-        p = ori_p + jp * dec_p
+        primary_colors.append(ori_p + jp * dec_p)
 
-        # accent color dicho
-        for ia in range(3):
-            ori_a = 1 / 2 ** (ia + 1)
-            dec_a = 1 / 2**ia
-            for ja in range(2**ia):
-                a = ori_a + ja * dec_a
+# secondary color dicho
+secondary_colors = []
+for ia in range(3):
+    ori_a = 1 / 2 ** (ia + 1)
+    dec_a = 1 / 2**ia
+    for ja in range(2**ia):
+        secondary_colors.append(ori_a + ja * dec_a)
 
-                # blue/orange
-                for c in range(2):
+teams = range(NB_TEAMS)
 
-                    # model
-                    for nm, ns in enumerate(Nsticker):
-                        logging.debug("model")
-                        newCar(c=c, p=p, a=a)
+stickers = range(NB_STICKERS)
 
-                        # sticker
-                        for s in range(ns):
-                            logging.debug("sticker")
-                            newCar(s=s)
+wheels = range(NB_WHEELS)
 
-                            # wheel
-                            for w in range(Nwheel):
-                                logging.debug("wheel")
-                                newCar(w=w)
+hats = range(NB_HATS)
 
-                                # hat
-                                for h in range(Nhat):
-                                    logging.debug("hat")
-                                    newCar(h=h)
+vertical_rotations = range(NB_VERTICAL_ROTATIONS)
+horizontal_rotations = range(NB_HORIZONTAL_ROTATIONS)
 
-                                    # rotate
-                                    for i in range(Nrot_v):
-                                        for j in range(Nrot_h):
-                                            rotate(1200, 0)
-                                            logging.debug("rotation")
-                                        rotate(0, 100)
-                        # next model
-                        newCar(
-                            n=1 if nm != len(Nsticker) - 1 else 1 - len(Nsticker),
-                        )
+loadouts = itertools.product(teams, wheels, hats, primary_colors, secondary_colors)
+
+for (team, wheel, hat, primary_color, secondary_color) in loadouts:
+    newCar(w=wheel, h=hat, p=primary_color, a=secondary_color, c=1)
