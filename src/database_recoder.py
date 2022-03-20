@@ -36,7 +36,7 @@ NB_WHEELS = 19
 NB_HATS = 22
 NB_TEAMS = 2
 
-DELAY = 0.1
+DELAY = 0.2
 
 NB_PRIMARY_COLORS = 1  # 3
 NB_SECONDARY_COLORS = 1  # 3
@@ -142,21 +142,24 @@ def newCar(s=-1, w=-1, h=-1, c=-1, p=-1.0, a=-1.0, n=0):
     sleep(DELAY)
 
 
-# primary color dicho
-primary_colors = []
-for ip in range(3):
-    ori_p = 1 / 2 ** (ip + 1)
-    dec_p = 1 / 2**ip
-    for jp in range(2**ip):
-        primary_colors.append(ori_p + jp * dec_p)
+# # primary color dicho
+# primary_colors = []
+# for ip in range(3):
+#     ori_p = 1 / 2 ** (ip + 1)
+#     dec_p = 1 / 2**ip
+#     for jp in range(2**ip):
+#         primary_colors.append(ori_p + jp * dec_p)
 
-# secondary color dicho
-secondary_colors = []
-for ia in range(3):
-    ori_a = 1 / 2 ** (ia + 1)
-    dec_a = 1 / 2**ia
-    for ja in range(2**ia):
-        secondary_colors.append(ori_a + ja * dec_a)
+# # secondary color dicho
+# secondary_colors = []
+# for ia in range(3):
+#     ori_a = 1 / 2 ** (ia + 1)
+#     dec_a = 1 / 2**ia
+#     for ja in range(2**ia):
+#         secondary_colors.append(ori_a + ja * dec_a)
+
+primary_colors = np.linspace(0, 1, 5, endpoint=True)
+secondary_colors = np.linspace(0, 1, 5, endpoint=True)
 
 teams = range(NB_TEAMS)
 
@@ -169,7 +172,19 @@ hats = range(NB_HATS)
 vertical_rotations = range(NB_VERTICAL_ROTATIONS)
 horizontal_rotations = range(NB_HORIZONTAL_ROTATIONS)
 
-loadouts = itertools.product(teams, wheels, hats, primary_colors, secondary_colors)
+loadouts = itertools.product(wheels, hats, primary_colors, secondary_colors, teams)
+nb_loadouts = (
+    len(teams) * len(wheels) * len(hats) * len(primary_colors) * len(secondary_colors)
+)  # find something prettier
 
-for (team, wheel, hat, primary_color, secondary_color) in loadouts:
-    newCar(w=wheel, h=hat, p=primary_color, a=secondary_color, c=1)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(name)s %(levelname)-8s  %(message)s",
+    datefmt="(%F %T)",
+)
+
+logging.debug(f"number of loadouts: {nb_loadouts}")
+
+for (wheel, hat, primary_color, secondary_color, team) in loadouts:
+    logging.debug(f"next loadout: {(team, wheel, hat, primary_color, secondary_color)}")
+    newCar(w=wheel, h=hat, p=primary_color, a=secondary_color, c=team)
