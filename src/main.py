@@ -1,6 +1,5 @@
 import logging
 from time import sleep
-from tkinter import VERTICAL
 
 from garage import generate_loadouts, generate_rotations, newCar, rotate
 from init import (
@@ -21,7 +20,6 @@ logging.basicConfig(
 if __name__ == "__main__":
 
     device = connect_adb()
-
     users = get_users(device)
     users = detect_game(device, users)
     start_game(device, users)
