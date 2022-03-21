@@ -1,7 +1,7 @@
 import logging
 from time import sleep
 
-from garage import generate_loadouts, generate_rotations, newCar, rotate
+from garage import generate_loadouts, newCar, rotate
 from init import (
     connect_adb,
     detect_focus,
