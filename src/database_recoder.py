@@ -1,4 +1,6 @@
+import itertools
 import logging
+from curses.ascii import DEL
 from subprocess import call
 from time import sleep
 
@@ -6,40 +8,46 @@ import numpy as np
 
 CENTER = (1000, 500)
 
-GARAGE = (340, 980)
-
-EDIT_LOADOUT_BTN = (1950, 850)
-SELECT_CAR_BTN = (1950, 980)
-
-BACK_BTN = (70, 60)
-
-itemX = (200, 450, 700)
-itemY = (300, 580, 860)
-
 STICKER_MENU_BTN = (220, 60)
 WHEEL_MENU_BTN = (330, 60)
 HAT_MENU_BTN = (440, 60)
 COLOR_MENU_BTN = (660, 60)
+GARAGE_BTN = (340, 980)
+EDIT_LOADOUT_BTN = (1950, 850)
+SELECT_CAR_BTN = (1950, 980)
+BACK_BTN = (50, 50)
 
-PRIMARY_COLOR_SLIDER = (290, 542)
-SECONDARY_COLOR_SLIDER = (380, 632)
+COLOR_MIN = 375
+COLOR_MAX = 715
+COLOR_DIST = COLOR_MAX - COLOR_MIN
+TEAM_OFFSET = 250  # pourquoi faire ?
+PRIMARY_COLOR_SLIDER = (290, 290 + TEAM_OFFSET)
+SECONDARY_COLOR_SLIDER = (380, 380 + TEAM_OFFSET)
 
-color_min = 366
-color_max = 708
-color_center = (color_min + color_max) / 2
-color_dist = color_max - color_min
+ITEM_X = (200, 450, 700)
+ITEM_Y = (300, 580, 860)
 
-Nsticker = [2, 2]  # [3, 3, 8, 9]
-Nwheel = 19
-Nhat = 22
+NB_STICKERS = [2, 2]
+NB_WHEELS = 2
+NB_HATS = 2
+NB_TEAMS = 2
 
-DELAY = 0.5
+DELAY = 0.15
 
-Ncolor_p = 1  # 3
-Ncolor_a = 1  # 3
+NB_PRIMARY_COLORS = 2
+NB_SECONDARY_COLORS = 2
 
-Nrot_h = 1  # 3
-Nrot_v = 1  # 3
+NB_HORIZONTAL_ROTATIONS = 3
+NB_VERTICAL_ROTATIONS = 3
+
+
+old_model = None
+old_sticker = None
+old_wheel = None
+old_hat = None
+old_primary_color = [None, None]
+old_secondary_color = [None, None]
+old_team = None
 
 
 def tap(pos):
@@ -51,27 +59,31 @@ def motion(pos, type):
     call(["adb", "shell", "input", "motionevent", type, str(pos[0]), str(pos[1])])
 
 
-def setColor(c: int, p: float, a: float):
+def selectColor(team: int, primary_color: float, secondary_color: float):
+
+    global old_team
+    global old_primary_color
+    global old_secondary_color
+
     tap(COLOR_MENU_BTN)
 
-    # set principal color
-    motion((color_center, PRIMARY_COLOR_SLIDER[c]), "DOWN")
-    motion((color_min + 100, PRIMARY_COLOR_SLIDER[c]), "MOVE")
-    motion((color_min + p * color_dist, PRIMARY_COLOR_SLIDER[c]), "MOVE")
-    motion((color_min + p * color_dist, PRIMARY_COLOR_SLIDER[c]), "UP")
+    # set primary color, if necessary
+    if primary_color != old_primary_color[team] or old_team != team:
+        motion((COLOR_MIN + 0.5 * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "DOWN")
+        motion((COLOR_MIN + primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "MOVE")
+        motion((COLOR_MIN + primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "UP")
 
-    # set accent color
-    motion((color_center, SECONDARY_COLOR_SLIDER[c]), "DOWN")
-    motion((color_min + 100, SECONDARY_COLOR_SLIDER[c]), "MOVE")
-    motion((color_min + a * color_dist, SECONDARY_COLOR_SLIDER[c]), "MOVE")
-    motion((color_min + a * color_dist, SECONDARY_COLOR_SLIDER[c]), "UP")
+    # set secondary color, if necessary
+    if secondary_color != old_secondary_color[team] or old_team != team:
+        motion((COLOR_MIN + 0.5 * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "DOWN")
+        motion((COLOR_MIN + secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "MOVE")
+        motion((COLOR_MIN + secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "UP")
 
 
 def rotate(x, y):
-    sleep(2)
     motion(CENTER, "DOWN")
-    motion(CENTER, "MOVE")
     motion(np.array(CENTER) + np.array((x, y)), "MOVE")
+    sleep(DELAY)
     motion(np.array(CENTER) + np.array((x, y)), "UP")
 
 
@@ -85,104 +97,163 @@ def selectItem(kind, i):
     # slide up item list
     if row > 2:
         nslide = row - 2
-        slide = itemY[0] - itemY[1]
+        slide = ITEM_Y[0] - ITEM_Y[1]
 
-        motion((itemX[1], itemY[2]), "DOWN")
-        motion((itemX[1], itemY[1]), "MOVE")
-        motion((itemX[1], itemY[1] + nslide * slide), "MOVE")
-        motion((itemX[1], itemY[1] + nslide * slide), "UP")
+        motion((ITEM_X[1], ITEM_Y[2]), "DOWN")
+        motion((ITEM_X[1], ITEM_Y[1]), "MOVE")
+        motion((ITEM_X[1], ITEM_Y[1] + nslide * slide), "MOVE")
+        motion((ITEM_X[1], ITEM_Y[1] + nslide * slide), "UP")
 
         row -= nslide
 
-    tap((itemX[col], itemY[row]))
+    tap((ITEM_X[col], ITEM_Y[row]))
 
 
-def nextModel(n):
-    motion(CENTER, "DOWN")
-    motion(CENTER, "MOVE")
-    motion(np.array(CENTER) + np.array((n * -1700, 0)), "MOVE")
-    motion(np.array(CENTER) + np.array((n * -1700, 0)), "UP")
-    tap(SELECT_CAR_BTN)
+def selectModel(model: int):
+
+    global old_model
+
+    if old_model == None:
+        global NB_STICKERS
+
+        # go to first model
+        for _ in range(len(NB_STICKERS)):
+            motion(CENTER, "DOWN")
+            motion(np.array(CENTER) + np.array((1000, 0)), "MOVE")
+            motion(np.array(CENTER) + np.array((1000, 0)), "UP")
+            sleep(1)
+        tap(SELECT_CAR_BTN)
+
+        old_model = 0
+
+    n = model - old_model
+
+    if n > 0:
+        motion(CENTER, "DOWN")
+        motion(np.array(CENTER) + n * np.array((-1700, 0)), "MOVE")
+        motion(np.array(CENTER) + n * np.array((-1700, 0)), "UP")
+        tap(SELECT_CAR_BTN)
+    elif n < 0:
+        # because backward is fucked up...
+        for _ in range(-n):
+            motion(CENTER, "DOWN")
+            motion(np.array(CENTER) + np.array((1000, 0)), "MOVE")
+            motion(np.array(CENTER) + np.array((1000, 0)), "UP")
+            sleep(1)
+        tap(SELECT_CAR_BTN)
 
 
-def newCar(s=-1, w=-1, h=-1, c=-1, p=-1.0, a=-1.0, n=0):
-    tap(GARAGE)
+def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_color: float, secondary_color: float):
+
+    global old_model
+    global old_sticker
+    global old_wheel
+    global old_hat
+    global old_primary_color
+    global old_secondary_color
+    global old_team
+
+    sleep(0.5)
+
+    # goto garage menu
+    tap(GARAGE_BTN)
     sleep(DELAY)
 
-    if n:
-        nextModel(n)
+    # select new model, if necessary
+    if model != old_model:
+        selectModel(model)
+        old_model = model
         sleep(DELAY)
 
+    # goto loadout editor
     tap(EDIT_LOADOUT_BTN)
     sleep(DELAY)
 
-    if s >= 0:
-        selectItem(STICKER_MENU_BTN, s)
+    # select sticker, if necessary
+    if sticker != old_sticker:
+        selectItem(STICKER_MENU_BTN, sticker)
+        old_sticker = sticker
         sleep(DELAY)
 
-    if w >= 0:
-        selectItem(WHEEL_MENU_BTN, w)
+    # select wheel, if necessary
+    if wheel != old_wheel:
+        selectItem(WHEEL_MENU_BTN, wheel)
+        old_wheel = wheel
         sleep(DELAY)
 
-    if h >= 0:
-        selectItem(HAT_MENU_BTN, h)
+    # select hat, if necessary
+    if hat != old_hat:
+        selectItem(HAT_MENU_BTN, hat)
+        old_hat = hat
         sleep(DELAY)
 
-    if c >= 0:
-        setColor(c, p, a)
+    # select color, if necessary
+    if team != old_team or primary_color != old_primary_color[team] or secondary_color != old_secondary_color[team]:
+        selectColor(team, primary_color, secondary_color)
+        old_team = team
+        old_primary_color[old_team] = primary_color
+        old_secondary_color[old_team] = secondary_color
         sleep(DELAY)
 
+    # goto main menu
+    tap(BACK_BTN)
+    sleep(DELAY)
     tap(BACK_BTN)
     sleep(DELAY)
 
-    tap(BACK_BTN)
-    sleep(DELAY)
+
+def generate_loadouts():
+    primary_colors = np.linspace(0, 1, NB_PRIMARY_COLORS, endpoint=True)  # pourquoi le endpoint ? (c'est par defaut)
+    secondary_colors = np.linspace(0, 1, NB_SECONDARY_COLORS, endpoint=True)
+
+    teams = range(NB_TEAMS)
+
+    # create models and stickers list (as the number of stickers is related to the model)
+    models_stickers = []
+    for model, n_sticker in enumerate(NB_STICKERS):
+
+        def assemblage(n):
+            return model, n
+
+        models_stickers += map(assemblage, range(n_sticker))
+
+    wheels = range(NB_WHEELS)
+    hats = range(NB_HATS)
+
+    # create the loadouts iterator
+    loadouts = itertools.product(models_stickers, wheels, hats, teams, primary_colors, secondary_colors)
+    nb_loadouts = sum(NB_STICKERS) * NB_WHEELS * NB_HATS * NB_PRIMARY_COLORS * NB_SECONDARY_COLORS * NB_TEAMS
+
+    logging.debug(f"number of loadouts: {nb_loadouts}")
+
+    return loadouts
 
 
-# principal color dicho
-for ip in range(3):
-    ori_p = 1 / 2 ** (ip + 1)
-    dec_p = 1 / 2**ip
-    for jp in range(2**ip):
-        p = ori_p + jp * dec_p
+def generate_rotations():
+    vertical_rotations = range(NB_VERTICAL_ROTATIONS)
+    horizontal_rotations = range(NB_HORIZONTAL_ROTATIONS)
 
-        # accent color dicho
-        for ia in range(3):
-            ori_a = 1 / 2 ** (ia + 1)
-            dec_a = 1 / 2**ia
-            for ja in range(2**ia):
-                a = ori_a + ja * dec_a
+    rotations = itertools.product(vertical_rotations, horizontal_rotations)
+    nb_rotations = NB_HORIZONTAL_ROTATIONS * NB_VERTICAL_ROTATIONS
 
-                # blue/orange
-                for c in range(2):
+    logging.debug(f"number of rotations: {nb_rotations}")
 
-                    # model
-                    for nm, ns in enumerate(Nsticker):
-                        logging.debug("model")
-                        newCar(c=c, p=p, a=a)
+    return rotations
 
-                        # sticker
-                        for s in range(ns):
-                            logging.debug("sticker")
-                            newCar(s=s)
 
-                            # wheel
-                            for w in range(Nwheel):
-                                logging.debug("wheel")
-                                newCar(w=w)
+loadouts = generate_loadouts()
+for ((model, sticker), wheel, hat, team, primary_color, secondary_color) in loadouts:
+    print(f"next loadout: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
+    newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
 
-                                # hat
-                                for h in range(Nhat):
-                                    logging.debug("hat")
-                                    newCar(h=h)
 
-                                    # rotate
-                                    for i in range(Nrot_v):
-                                        for j in range(Nrot_h):
-                                            rotate(1200, 0)
-                                            logging.debug("rotation")
-                                        rotate(0, 100)
-                        # next model
-                        newCar(
-                            n=1 if nm != len(Nsticker) - 1 else 1 - len(Nsticker),
-                        )
+# a = [2, 3]
+# res = []
+# for i, n in enumerate(a):
+
+#     def truc(u):
+#         return (i, u)
+
+#     res += map(truc, range(n))
+
+# print(res)
