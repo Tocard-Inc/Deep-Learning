@@ -29,8 +29,8 @@ if __name__ == "__main__":
     NB_ROTATIONS = 20
 
     while detect_focus(device):
-        for (wheel, hat, team, primary_color, secondary_color) in loadouts:
-            logging.debug(f"next loadout: {(wheel, hat, team, primary_color, secondary_color)}")
+        for (i, (wheel, hat, team, primary_color, secondary_color)) in enumerate(loadouts):
+            logging.debug(f"loadout {i}: {(wheel, hat, team, primary_color, secondary_color)}")
             newCar(wheel, hat, team, primary_color, secondary_color)
 
             sleep(0.5)

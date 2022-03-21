@@ -33,7 +33,7 @@ NB_WHEELS = 19
 NB_HATS = 22
 NB_TEAMS = 2
 
-DELAY = 0.15
+DELAY = 0.10
 
 NB_PRIMARY_COLORS = 5
 NB_SECONDARY_COLORS = 5
@@ -128,11 +128,9 @@ def newCar(wheel: int, hat: int, team: int, primary_color: float, secondary_colo
     global old_secondary_color
     global old_team
 
-    sleep(0.5)
-
     # goto garage menu
-    tap(GARAGE_BTN)
     sleep(DELAY)
+    tap(GARAGE_BTN)
 
     # # select new model, if necessary
     # if model != old_model:
@@ -141,8 +139,8 @@ def newCar(wheel: int, hat: int, team: int, primary_color: float, secondary_colo
     #     sleep(DELAY)
 
     # goto loadout editor
-    tap(EDIT_LOADOUT_BTN)
     sleep(DELAY)
+    tap(EDIT_LOADOUT_BTN)
 
     # # select sticker, if necessary
     # if sticker != old_sticker:
@@ -171,10 +169,10 @@ def newCar(wheel: int, hat: int, team: int, primary_color: float, secondary_colo
         sleep(DELAY)
 
     # goto main menu
-    tap(BACK_BTN)
     sleep(DELAY)
     tap(BACK_BTN)
     sleep(DELAY)
+    tap(BACK_BTN)
 
 
 def generate_loadouts():
