@@ -190,15 +190,3 @@ def generate_loadouts():
     logging.debug(f"number of loadouts: {nb_loadouts}")
 
     return loadouts
-
-
-def generate_rotations():
-    vertical_rotations = range(NB_VERTICAL_ROTATIONS)
-    horizontal_rotations = range(NB_HORIZONTAL_ROTATIONS)
-
-    rotations = itertools.product(vertical_rotations, horizontal_rotations)
-    nb_rotations = NB_HORIZONTAL_ROTATIONS * NB_VERTICAL_ROTATIONS
-
-    logging.debug(f"number of rotations: {nb_rotations}")
-
-    return rotations
