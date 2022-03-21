@@ -17,13 +17,12 @@
 
 ### Installation
 
-Clone the repository :
-
 Install Poetry:
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
+Clone the repository :
 ```bash
 git clone git@git.inpt.fr:tocard-inc/enseeiht/projet-classification.git
 ```
@@ -40,8 +39,7 @@ poetry install
 
 Plug your android phone to your computer, ensure adb detects it and that you've granted the permission to your computer.
 
-To run the database generator
-
+To run the database generator :
 ```bash
 python3 src/main.py
 ```
