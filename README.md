@@ -56,5 +56,5 @@ See [`LICENSE`](https://git.inpt.fr/fainsil/booplaysgba/-/blob/master/LICENSE) f
 ## Contact
 
 Laureηt \<[laurentfainsin@protonmail.com](mailto:laurentfainsin@protonmail.com)\>
-Damien Guillotin  \<[damien.guillotin@etu.inp-n7.fr](mailto:damien.guillotin@etu.inp-n7.fr)\>
+Damien Guillotin  \<[damien.guillotin@etu.inp-n7.fr](mailto:damguillotin@gmail.com)\>
 Pierre-Eliot Jourdan \<[pierreliot.jourdan@etu.inp-n7.fr](mailto:pierreliot.jourdan@etu.inp-n7.fr)\>
