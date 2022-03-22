@@ -19,7 +19,7 @@ BACK_BTN = (50, 50)
 COLOR_MIN = 375
 COLOR_MAX = 715
 COLOR_DIST = COLOR_MAX - COLOR_MIN
-TEAM_OFFSET = 250  # pourquoi faire ?
+TEAM_OFFSET = 250
 PRIMARY_COLOR_SLIDER = (290, 290 + TEAM_OFFSET)
 SECONDARY_COLOR_SLIDER = (380, 380 + TEAM_OFFSET)
 
@@ -68,7 +68,7 @@ def selectColor(team: int, primary_color: float, secondary_color: float):
 
     # set primary color, if necessary
     if primary_color != old_primary_color[team] or old_team != team:
-        if old_primary_color[team] == None:
+        if old_primary_color[team] is None:
             motion((COLOR_MIN + 0.5 * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "DOWN")
             motion((COLOR_MIN + 0.1 * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "MOVE")
         else:
@@ -210,8 +210,8 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
 
 
 def generate_loadouts():
-    primary_colors = np.linspace(0, 1, NB_PRIMARY_COLORS, endpoint=True)  # pourquoi le endpoint ? (c'est par defaut)
-    secondary_colors = np.linspace(0, 1, NB_SECONDARY_COLORS, endpoint=True)
+    primary_colors = np.linspace(0, 1, NB_PRIMARY_COLORS)
+    secondary_colors = np.linspace(0, 1, NB_SECONDARY_COLORS)
 
     teams = range(NB_TEAMS)
 
@@ -236,19 +236,9 @@ def generate_loadouts():
     return loadouts
 
 
-def generate_rotations():
-    vertical_rotations = range(NB_VERTICAL_ROTATIONS)
-    horizontal_rotations = range(NB_HORIZONTAL_ROTATIONS)
+if __name__ == "__main__":
 
-    rotations = itertools.product(vertical_rotations, horizontal_rotations)
-    nb_rotations = NB_HORIZONTAL_ROTATIONS * NB_VERTICAL_ROTATIONS
-
-    logging.debug(f"number of rotations: {nb_rotations}")
-
-    return rotations
-
-
-loadouts = generate_loadouts()
-for ((model, sticker), wheel, hat, team, primary_color, secondary_color) in loadouts:
-    print(f"next loadout: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
-    newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
+    loadouts = generate_loadouts()
+    for ((model, sticker), wheel, hat, team, primary_color, secondary_color) in loadouts:
+        print(f"next loadout: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
+        newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)

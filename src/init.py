@@ -1,6 +1,5 @@
 import logging
 import re
-from time import sleep
 
 from ppadb.client import Client as AdbClient
 
@@ -12,12 +11,6 @@ PSYONIX_ACTIVITY_NAME = "com.epicgames.ue4.SplashActivity"
 
 ADB_HOST = "127.0.0.1"
 ADB_PORT = 5037
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s %(name)s %(levelname)-8s  %(message)s",
-    datefmt="(%F %T)",
-)
 
 
 def connect_adb():
@@ -50,12 +43,13 @@ def get_users(device):
 
 
 def detect_game(device, users):
-    users = [
-        (id, name) for (id, name) in users if "package:" in device.shell(f"pm path --user {id} {PSYONIX_PACKAGE_NAME}")
-    ]
+    playable_users = []
+    for (id, name) in users:
+        if "package:" in device.shell(f"pm path --user {id} {PSYONIX_PACKAGE_NAME}"):
+            playable_users.append((id, name))
 
-    logging.debug(f"playable users: {users}")
-    return users
+    logging.debug(f"playable users: {playable_users}")
+    return playable_users
 
 
 def start_game(device, users):
@@ -86,21 +80,3 @@ def detect_focus(device) -> bool:
     activity_dump = device.shell("dumpsys activity activities")
     result = REGEX_FOCUS.search(activity_dump)
     return result is not None
-
-
-if __name__ == "__main__":
-
-    device = connect_adb()
-
-    users = get_users(device)
-
-    users = detect_game(device, users)
-
-    start_game(device, users)
-
-    set_notifications(device, False)
-
-    while detect_focus(device):
-        sleep(1)
-
-    set_notifications(device, True)
