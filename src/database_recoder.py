@@ -26,12 +26,12 @@ SECONDARY_COLOR_SLIDER = (380, 380 + TEAM_OFFSET)
 ITEM_X = (200, 450, 700)
 ITEM_Y = (300, 580, 860)
 
-NB_STICKERS = [2, 2]
+NB_STICKERS = (2, 2)
 NB_WHEELS = 2
 NB_HATS = 2
 NB_TEAMS = 2
 
-DELAY = 0.15
+DELAY = 0.01
 
 NB_PRIMARY_COLORS = 2
 NB_SECONDARY_COLORS = 2
@@ -68,13 +68,21 @@ def selectColor(team: int, primary_color: float, secondary_color: float):
 
     # set primary color, if necessary
     if primary_color != old_primary_color[team] or old_team != team:
-        motion((COLOR_MIN + 0.5 * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "DOWN")
+        if old_primary_color[team] == None:
+            motion((COLOR_MIN + 0.5 * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "DOWN")
+            motion((COLOR_MIN + 0.1 * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "MOVE")
+        else:
+            motion((COLOR_MIN + old_primary_color[team] * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "DOWN")
         motion((COLOR_MIN + primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "MOVE")
         motion((COLOR_MIN + primary_color * COLOR_DIST, PRIMARY_COLOR_SLIDER[team]), "UP")
 
     # set secondary color, if necessary
     if secondary_color != old_secondary_color[team] or old_team != team:
-        motion((COLOR_MIN + 0.5 * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "DOWN")
+        if old_primary_color[team] == None:
+            motion((COLOR_MIN + 0.5 * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "DOWN")
+            motion((COLOR_MIN + 0.1 * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "MOVE")
+        else:
+            motion((COLOR_MIN + old_secondary_color[team] * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "DOWN")
         motion((COLOR_MIN + secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "MOVE")
         motion((COLOR_MIN + secondary_color * COLOR_DIST, SECONDARY_COLOR_SLIDER[team]), "UP")
 
