@@ -1,6 +1,5 @@
 import itertools
 import logging
-from curses.ascii import DEL
 from subprocess import call
 from time import sleep
 
@@ -245,15 +244,3 @@ loadouts = generate_loadouts()
 for ((model, sticker), wheel, hat, team, primary_color, secondary_color) in loadouts:
     print(f"next loadout: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
     newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
-
-
-# a = [2, 3]
-# res = []
-# for i, n in enumerate(a):
-
-#     def truc(u):
-#         return (i, u)
-
-#     res += map(truc, range(n))
-
-# print(res)
