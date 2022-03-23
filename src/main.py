@@ -1,6 +1,7 @@
 import logging
 from time import sleep
 
+import init
 from database import connect_to_database, insert_into_database, take_screenshot
 from garage import generate_loadouts, newCar, rotate
 from init import (
@@ -22,18 +23,18 @@ logging.getLogger("PIL.PngImagePlugin").setLevel(logging.ERROR)
 
 if __name__ == "__main__":
 
-    device = connect_adb()
-    users = get_users(device)
-    users = detect_game(device, users)
-    start_game(device, users)
-    set_notifications(device, False)
+    connect_adb()
+    users = get_users(init.device)
+    users = detect_game(init.device, users)
+    start_game(init.device, users)
+    set_notifications(init.device, False)
 
     database = connect_to_database("dataset.db")
 
     loadouts = generate_loadouts()
     NB_ROTATIONS = 20
 
-    while detect_focus(device):
+    while detect_focus(init.device):
         for (i, loadout) in enumerate(loadouts):
             ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
 
@@ -43,9 +44,9 @@ if __name__ == "__main__":
             sleep(0.5)
             for x_rotation in range(NB_ROTATIONS):
                 rotate(130, 0)
-                uuid = take_screenshot(device)
+                uuid = take_screenshot(init.device)
                 insert_into_database(database, uuid, loadout, x_rotation, 0)
 
-    set_notifications(device, True)
+    set_notifications(init.device, True)
 
     database.close()
