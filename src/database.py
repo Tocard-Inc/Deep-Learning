@@ -1,4 +1,5 @@
 import io
+import logging
 import sqlite3
 import uuid
 
@@ -9,13 +10,16 @@ DATA_FOLDER = "data/"
 
 def take_screenshot(device):
     result = device.screencap()
+    logging.debug("screenshot taken")
     image = Image.open(io.BytesIO(result))
     image = image.crop((0, 160, 2200, 860))
     image.thumbnail((150, 150))
+    logging.debug("screenshot converted")
     # image = image.resize((150, 150), Image.ANTIALIAS)
 
     filename = uuid.uuid1()
     image.save(f"{DATA_FOLDER}/{filename}.png")
+    logging.debug("screenshot saved")
 
     return filename
 
