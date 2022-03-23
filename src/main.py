@@ -31,13 +31,13 @@ if __name__ == "__main__":
     database = connect_to_database("dataset.db")
 
     loadouts = generate_loadouts()
-    NB_ROTATIONS = 3
+    NB_ROTATIONS = 20
 
     while detect_focus(device):
         for (i, loadout) in enumerate(loadouts):
             ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
 
-            logging.debug(f"loadout {i}: {(wheel, hat, team, primary_color, secondary_color)}")
+            logging.debug(f"loadout {i}: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
             newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
 
             sleep(0.5)
