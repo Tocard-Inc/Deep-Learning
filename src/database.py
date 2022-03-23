@@ -2,31 +2,31 @@ import io
 import sqlite3
 import uuid
 
-from PIL import Image, ImageOps
+from PIL import Image
 
 DATA_FOLDER = "data/"
 
-con = sqlite3.connect("dataset.db")
 
-from ppadb.client import Client as AdbClient
+def take_screenshot(device):
+    result = device.screencap()
+    image = Image.open(io.BytesIO(result))
+    image = image.crop((0, 160, 2200, 860))
+    image.thumbnail((150, 150))
+    # image = image.resize((150, 150), Image.ANTIALIAS)
 
-client = AdbClient(host="127.0.0.1", port=5037)
-device = client.device("13231FDD4003UE")
+    filename = uuid.uuid1()
+    image.save(f"{DATA_FOLDER}/{filename}.png")
 
-filename = uuid.uuid1()
-result = device.screencap()
+    return filename
 
-image = Image.open(io.BytesIO(result))
-image = image.crop((0, 160, 2200, 860))
-image = image.resize((150, 150), Image.ANTIALIAS)
 
-image.save("data/test.png")
-image.rotate(90).save("data/test90.png")
-image.rotate(180).save("data/test180.png")
-image.rotate(-90).save("data/test-90.png")
-ImageOps.mirror(image).save("data/testmirror.png")
+def connect_to_database(filename):
+    return sqlite3.connect(filename)
 
-con.execute(f"INSERT INTO data VALUES ('{filename}',{0},{0},{0.5},{0.5},{0},{0},{0},{0},{0})")
-con.commit()
 
-con.close()
+def insert_into_database(database, uuid, loadout, x_rotation, y_rotation):
+    ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
+    database.execute(
+        f"INSERT INTO data VALUES ('{uuid}',{model},{team},{primary_color},{secondary_color},{hat},{sticker},{wheel},{x_rotation},{y_rotation})"
+    )
+    database.commit()

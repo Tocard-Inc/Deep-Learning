@@ -26,12 +26,12 @@ SECONDARY_COLOR_SLIDER = (380, 380 + TEAM_OFFSET)
 ITEM_X = (200, 450, 700)
 ITEM_Y = (300, 580, 860)
 
-NB_STICKERS = (2, 2)
+NB_STICKERS = (2,)
 NB_WHEELS = 2
 NB_HATS = 2
 NB_TEAMS = 2
 
-DELAY = 0.01
+DELAY = 0.1
 
 NB_PRIMARY_COLORS = 2
 NB_SECONDARY_COLORS = 2
@@ -124,7 +124,7 @@ def selectModel(model: int):
         global NB_STICKERS
 
         # go to first model
-        for _ in range(len(NB_STICKERS)):
+        for _ in range(len(NB_STICKERS) - 1):
             motion(CENTER, "DOWN")
             motion(np.array(CENTER) + np.array((1000, 0)), "MOVE")
             motion(np.array(CENTER) + np.array((1000, 0)), "UP")
@@ -204,7 +204,7 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
 
     # goto main menu
     tap(BACK_BTN)
-    sleep(DELAY)
+    sleep(10 * DELAY)
     tap(BACK_BTN)
     sleep(DELAY)
 
