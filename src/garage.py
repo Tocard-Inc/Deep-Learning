@@ -204,7 +204,7 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
 
     # goto main menu
     tap(BACK_BTN)
-    sleep(10 * DELAY)
+    sleep(DELAY)
     tap(BACK_BTN)
     sleep(DELAY)
 
