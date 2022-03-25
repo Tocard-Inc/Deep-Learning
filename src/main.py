@@ -21,6 +21,7 @@ logging.basicConfig(
 
 logging.getLogger("PIL.PngImagePlugin").setLevel(logging.ERROR)
 
+
 if __name__ == "__main__":
 
     connect_adb()
@@ -35,7 +36,12 @@ if __name__ == "__main__":
     NB_ROTATIONS = 1
     N_START = 9984
     N_STOP = 1e10
-    
+
+    while init.device.shell("settings get global zen_mode") != "1\n" and detect_focus(init.device):
+        sleep(1)
+
+    sleep(1)
+
     for (i, loadout) in enumerate(loadouts):
         # Sauter les N premiers
         if i < N_START:

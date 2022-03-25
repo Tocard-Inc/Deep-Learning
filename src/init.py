@@ -4,7 +4,7 @@ import re
 from ppadb.client import Client as AdbClient
 
 REGEX_USER = re.compile(r"UserInfo\{([0-9]*):([a-zA-Z ]*):.*")
-REGEX_FOCUS = re.compile(r"mFocused.*com.Psyonix.RL2D.*")
+REGEX_FOCUS = re.compile(r"mCurrentFocus.*com.Psyonix.RL2D.*")
 
 PSYONIX_PACKAGE_NAME = "com.Psyonix.RL2D"
 PSYONIX_ACTIVITY_NAME = "com.epicgames.ue4.SplashActivity"

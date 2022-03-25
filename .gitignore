@@ -1,6 +1,7 @@
 .venv
 .mypy_cache
 data*
+!database.py
 **/__pycache__
 dataset*.db
 !dataset.example.db
