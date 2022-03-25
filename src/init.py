@@ -20,6 +20,7 @@ def connect_adb():
 
     logging.debug(f"devices detected: {devices_names}")
 
+    global device
     if len(devices) == 1:
         device = devices[0]
     elif len(devices) == 0:
@@ -30,8 +31,6 @@ def connect_adb():
         # TODO
 
     logging.debug(f"device selected: {device.serial}")
-
-    return device
 
 
 def get_users(device):

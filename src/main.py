@@ -1,6 +1,7 @@
 import logging
 from time import sleep
 
+import init
 from database import connect_to_database, insert_into_database, take_screenshot
 from garage import generate_loadouts, newCar, rotate
 from init import (
@@ -22,11 +23,11 @@ logging.getLogger("PIL.PngImagePlugin").setLevel(logging.ERROR)
 
 if __name__ == "__main__":
 
-    device = connect_adb()
-    users = get_users(device)
-    users = detect_game(device, users)
-    start_game(device, users)
-    set_notifications(device, False)
+    connect_adb()
+    users = get_users(init.device)
+    users = detect_game(init.device, users)
+    start_game(init.device, users)
+    set_notifications(init.device, False)
 
     database = connect_to_database("dataset.db")
 
@@ -34,28 +35,26 @@ if __name__ == "__main__":
     NB_ROTATIONS = 1
     N_START = 9984
     N_STOP = 1e10
+    
+    for (i, loadout) in enumerate(loadouts):
+        # Sauter les N premiers
+        if i < N_START:
+            continue
 
-    while detect_focus(device):
+        if i >= N_STOP:
+            exit(0)
 
-        for (i, loadout) in enumerate(loadouts):
-            # Sauter les N premiers
-            if i < N_START:
-                continue
+        ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
 
-            if i >= N_STOP:
-                exit(0)
+        logging.debug(f"loadout {i}: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
+        newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
 
-            ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
+        sleep(0.5)
+        for x_rotation in range(NB_ROTATIONS):
+            uuid = take_screenshot(init.device)
+            insert_into_database(database, uuid, loadout, x_rotation, 0)
+            rotate(130, 0)
 
-            logging.debug(f"loadout {i}: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
-            newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
-
-            sleep(0.5)
-            for x_rotation in range(NB_ROTATIONS):
-                uuid = take_screenshot(device)
-                insert_into_database(database, uuid, loadout, x_rotation, 0)
-                # rotate(130, 0)
-
-    set_notifications(device, True)
+    set_notifications(init.device, True)
 
     database.close()

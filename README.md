@@ -1,4 +1,4 @@
-# B00 plays GBA
+# Rocket League Sideswipe Classification
 
 ## Built with
 

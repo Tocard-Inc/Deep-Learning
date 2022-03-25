@@ -1,9 +1,10 @@
 import itertools
 import logging
-from subprocess import call
 from time import sleep
 
 import numpy as np
+
+import init
 
 CENTER = (1000, 500)
 
@@ -47,12 +48,11 @@ old_team = None
 
 
 def tap(pos):
-    call(["adb", "shell", "input", "tap", str(pos[0]), str(pos[1])])
-    #    device.shell(f"input tap {pos[0]} {pos[1]}")
+    init.device.shell(f"input tap {pos[0]} {pos[1]}")
 
 
 def motion(pos, type):
-    call(["adb", "shell", "input", "motionevent", type, str(pos[0]), str(pos[1])])
+    init.device.shell(f"input motionevent {type} {pos[0]} {pos[1]}")
 
 
 def selectColor(team: int, primary_color: float, secondary_color: float):
