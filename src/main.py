@@ -32,20 +32,28 @@ if __name__ == "__main__":
     database = connect_to_database("dataset.db")
 
     loadouts = generate_loadouts()
-    NB_ROTATIONS = 20
+    NB_ROTATIONS = 1
+    N_START = 9984
+    N_STOP = 1e10
+    
+    for (i, loadout) in enumerate(loadouts):
+        # Sauter les N premiers
+        if i < N_START:
+            continue
 
-    while detect_focus(init.device):
-        for (i, loadout) in enumerate(loadouts):
-            ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
+        if i >= N_STOP:
+            exit(0)
 
-            logging.debug(f"loadout {i}: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
-            newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
+        ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
 
-            sleep(0.5)
-            for x_rotation in range(NB_ROTATIONS):
-                rotate(130, 0)
-                uuid = take_screenshot(init.device)
-                insert_into_database(database, uuid, loadout, x_rotation, 0)
+        logging.debug(f"loadout {i}: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
+        newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
+
+        sleep(0.5)
+        for x_rotation in range(NB_ROTATIONS):
+            uuid = take_screenshot(init.device)
+            insert_into_database(database, uuid, loadout, x_rotation, 0)
+            rotate(130, 0)
 
     set_notifications(init.device, True)
 
