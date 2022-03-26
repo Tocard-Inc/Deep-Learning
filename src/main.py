@@ -9,11 +9,10 @@ NB_ETA = 25
 
 NB_ROTATIONS = 1
 
-N_START = 9984
+N_START = 0
 N_STOP = 0
 
 DELAY_TRANSITION = 0.3
-
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -22,7 +21,6 @@ logging.basicConfig(
 )
 
 logging.getLogger("PIL.PngImagePlugin").setLevel(logging.ERROR)
-
 
 if __name__ == "__main__":
 

@@ -104,7 +104,7 @@ def detect_focus(device: ppadb.device.Device) -> bool:
 
 def start_scrpy() -> None:
     subprocess.Popen(
-        "scrcpy --crop=700:1830:160:200 --v4l2-sink=/dev/video2 --disable-screensaver -N -m 250".split(),
+        "scrcpy --v4l2-sink=/dev/video2 --disable-screensaver -N -m 512".split(),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )
@@ -128,7 +128,7 @@ def screenshot() -> uuid.UUID:
     filename = uuid.uuid1()
 
     subprocess.Popen(
-        f"ffmpeg -f video4linux2 -i /dev/video2 -frames:v 1 {DATA_FOLDER}/{filename}.jpg".split(),
+        f"ffmpeg -f video4linux2 -i /dev/video2 -frames:v 1 -filter:v crop=400:150:45:30 {DATA_FOLDER}/{filename}.jpg".split(),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )

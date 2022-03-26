@@ -37,7 +37,6 @@ DELAY = 0.1
 NB_PRIMARY_COLORS = 3
 NB_SECONDARY_COLORS = 1
 
-
 old_model = None
 old_sticker = None
 old_wheel = None
