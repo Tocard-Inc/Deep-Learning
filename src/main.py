@@ -7,7 +7,7 @@ import utils
 
 NB_ETA = 25
 
-NB_ROTATIONS = 5
+NB_ROTATIONS = 10
 
 N_START = 0
 N_STOP = 0
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         for x_rotation in range(NB_ROTATIONS):
             uuid = utils.screenshot()
             utils.insert(db, uuid, loadout, x_rotation, 0)
-            garage.rotate(130, 0)
+            garage.rotate(265, 0)
 
         # tac
         elapsed = time.time() - elapsed
