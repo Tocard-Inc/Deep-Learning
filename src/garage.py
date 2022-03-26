@@ -27,12 +27,12 @@ SECONDARY_COLOR_SLIDER = (380, 380 + TEAM_OFFSET)
 ITEM_X = (200, 450, 700)
 ITEM_Y = (300, 580, 860)
 
-NB_STICKERS = (0, 0, 3, 3)
+NB_STICKERS = (3, 3, 0, 0)
 NB_WHEELS = 23
-NB_HATS = 20
+NB_HATS = 23
 NB_TEAMS = 2
 
-DELAY = 0.1
+DELAY = 0.01
 
 NB_PRIMARY_COLORS = 3
 NB_SECONDARY_COLORS = 1
@@ -165,25 +165,25 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
     time.sleep(DELAY)
 
     # select sticker, if necessary
-    if sticker != old_sticker:
+    if sticker != old_sticker or model != old_model:
         selectItem(STICKER_MENU_BTN, sticker)
         old_sticker = sticker
         time.sleep(DELAY)
 
     # select wheel, if necessary
-    if wheel != old_wheel:
+    if wheel != old_wheel or model != old_model:
         selectItem(WHEEL_MENU_BTN, wheel)
         old_wheel = wheel
         time.sleep(DELAY)
 
     # select hat, if necessary
-    if hat != old_hat:
+    if hat != old_hat or model != old_model:
         selectItem(HAT_MENU_BTN, hat)
         old_hat = hat
         time.sleep(DELAY)
 
     # select color, if necessary
-    if team != old_team or primary_color != old_primary_color[team] or secondary_color != old_secondary_color[team]:
+    if team != old_team or primary_color != old_primary_color[team] or secondary_color != old_secondary_color[team] or model != old_model:
         selectColor(team, primary_color, secondary_color)
         old_team = team
         old_primary_color[old_team] = primary_color
