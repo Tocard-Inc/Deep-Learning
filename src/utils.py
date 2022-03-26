@@ -91,11 +91,11 @@ def start_game(device: ppadb.device.Device, users: UserList) -> None:
     logging.debug("game activity started")
 
 
-def detect_zen_mode(device: ppadb.device.Device) -> bool:
+def is_zen_mode(device: ppadb.device.Device) -> bool:
     return device.shell("settings get global zen_mode") != "1\n"
 
 
-def detect_focus(device: ppadb.device.Device) -> bool:
+def is_focused(device: ppadb.device.Device) -> bool:
     activity_dump = device.shell("dumpsys activity activities")
     result = REGEX_FOCUS.search(activity_dump)
 
@@ -116,7 +116,7 @@ def startup() -> None:
     users = detect_game(device, users)
     start_game(device, users)
 
-    while not (detect_zen_mode(device) or detect_focus(device)):
+    while not (is_zen_mode(device) and is_focused(device)):
         time.sleep(DELAY_DETECT)
 
     time.sleep(DELAY_DETECT)
