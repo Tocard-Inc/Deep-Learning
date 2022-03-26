@@ -25,11 +25,11 @@ DATA_FOLDER = "data/"
 UserList = list[tuple[int, str]]
 
 
-def tap(pos):
+def tap(pos) -> None:
     device.shell(f"input tap {pos[0]} {pos[1]}")
 
 
-def motion(pos, type):
+def motion(pos, type) -> None:
     device.shell(f"input motionevent {type} {pos[0]} {pos[1]}")
 
 
