@@ -216,7 +216,7 @@ def generate_loadouts():
     hats = range(NB_HATS)
 
     # create the loadouts iterator
-    loadouts = itertools.product(models_stickers, wheels, hats, teams, primary_colors, secondary_colors)
+    loadouts = itertools.product(wheels, models_stickers, hats, teams, primary_colors, secondary_colors)
     nb_loadouts = sum(NB_STICKERS) * NB_WHEELS * NB_HATS * NB_PRIMARY_COLORS * NB_SECONDARY_COLORS * NB_TEAMS
 
     logging.debug(f"number of loadouts: {nb_loadouts}")

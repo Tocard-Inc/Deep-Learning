@@ -137,7 +137,7 @@ def screenshot() -> uuid.UUID:
 
 
 def insert(database: sqlite3.Connection, uuid: uuid.UUID, loadout: tuple, x_rotation: int, y_rotation: int) -> None:
-    ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
+    (wheel, (model, sticker), hat, team, primary_color, secondary_color) = loadout
     database.execute(
         f"INSERT INTO data VALUES ('{uuid}',{model},{team},{primary_color},{secondary_color},{hat},{sticker},{wheel},{x_rotation},{y_rotation})"
     )

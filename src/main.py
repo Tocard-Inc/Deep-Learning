@@ -52,7 +52,7 @@ if __name__ == "__main__":
         elapsed = time.time()
 
         # unpacking du loadout
-        ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
+        (wheel, (model, sticker), hat, team, primary_color, secondary_color) = loadout
 
         # modification de la voiture dans le garage
         garage.newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
