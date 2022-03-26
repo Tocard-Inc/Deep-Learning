@@ -66,15 +66,15 @@ if __name__ == "__main__":
         for x_rotation in range(NB_ROTATIONS):
             uuid = utils.screenshot()
             utils.insert(db, uuid, loadout, x_rotation, 0)
-            garage.rotate(130, 0)
+            # garage.rotate(130, 0)
 
         # tac
         elapsed = time.time() - elapsed
         eta_list[i % NB_ETA] = elapsed
-        estimation = (nb_loadouts - i) * sum(eta_list) / NB_ETA
+        estimation = int((nb_loadouts - i) * sum(eta_list) / NB_ETA)
 
         logging.debug(
-            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({elapsed:.02f}s, ETA: {estimation:.02f}s): {loadout}"
+            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({elapsed:.02f}s, ETA: {estimation}s): {loadout}"
         )
 
     # fermeture de la db sqlite3

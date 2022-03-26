@@ -1,10 +1,10 @@
 import itertools
 import logging
-from time import sleep
+import time
 
 import numpy as np
 
-import init
+from utils import motion, tap
 
 CENTER = (1000, 500)
 
@@ -32,7 +32,7 @@ NB_WHEELS = 23
 NB_HATS = 20
 NB_TEAMS = 2
 
-DELAY = 0.01
+DELAY = 0.1
 
 NB_PRIMARY_COLORS = 3
 NB_SECONDARY_COLORS = 1
@@ -45,14 +45,6 @@ old_hat = None
 old_primary_color = [None, None]
 old_secondary_color = [None, None]
 old_team = None
-
-
-def tap(pos):
-    init.device.shell(f"input tap {pos[0]} {pos[1]}")
-
-
-def motion(pos, type):
-    init.device.shell(f"input motionevent {type} {pos[0]} {pos[1]}")
 
 
 def selectColor(team: int, primary_color: float, secondary_color: float):
@@ -87,13 +79,13 @@ def selectColor(team: int, primary_color: float, secondary_color: float):
 def rotate(x, y):
     motion(CENTER, "DOWN")
     motion(np.array(CENTER) + np.array((x, y)), "MOVE")
-    sleep(DELAY)
+    # time.sleep(0)
     motion(np.array(CENTER) + np.array((x, y)), "UP")
 
 
 def selectItem(kind, i):
     tap(kind)
-    sleep(DELAY)
+    time.sleep(DELAY)
 
     col = i % 3
     row = i // 3
@@ -125,7 +117,7 @@ def selectModel(model: int):
             motion(CENTER, "DOWN")
             motion(np.array(CENTER) + np.array((1000, 0)), "MOVE")
             motion(np.array(CENTER) + np.array((1000, 0)), "UP")
-            sleep(1)
+            time.sleep(1)
         tap(SELECT_CAR_BTN)
 
         old_model = 0
@@ -143,7 +135,7 @@ def selectModel(model: int):
             motion(CENTER, "DOWN")
             motion(np.array(CENTER) + np.array((1000, 0)), "MOVE")
             motion(np.array(CENTER) + np.array((1000, 0)), "UP")
-            sleep(1)
+            time.sleep(1)
         tap(SELECT_CAR_BTN)
 
 
@@ -157,39 +149,37 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
     global old_secondary_color
     global old_team
 
-    sleep(0.5)
-
     # goto garage menu
     tap(GARAGE_BTN)
-    sleep(DELAY)
+    time.sleep(DELAY)
 
     # select new model, if necessary
     if model != old_model:
         selectModel(model)
         old_model = model
-        sleep(DELAY)
+        time.sleep(DELAY)
 
     # goto loadout editor
     tap(EDIT_LOADOUT_BTN)
-    sleep(DELAY)
+    time.sleep(DELAY)
 
     # select sticker, if necessary
     if sticker != old_sticker:
         selectItem(STICKER_MENU_BTN, sticker)
         old_sticker = sticker
-        sleep(DELAY)
+        time.sleep(DELAY)
 
     # select wheel, if necessary
     if wheel != old_wheel:
         selectItem(WHEEL_MENU_BTN, wheel)
         old_wheel = wheel
-        sleep(DELAY)
+        time.sleep(DELAY)
 
     # select hat, if necessary
     if hat != old_hat:
         selectItem(HAT_MENU_BTN, hat)
         old_hat = hat
-        sleep(DELAY)
+        time.sleep(DELAY)
 
     # select color, if necessary
     if team != old_team or primary_color != old_primary_color[team] or secondary_color != old_secondary_color[team]:
@@ -197,13 +187,15 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
         old_team = team
         old_primary_color[old_team] = primary_color
         old_secondary_color[old_team] = secondary_color
-        sleep(DELAY)
+        time.sleep(DELAY)
 
     # goto main menu
     tap(BACK_BTN)
-    sleep(DELAY)
+    time.sleep(DELAY)
     tap(BACK_BTN)
-    sleep(DELAY)
+    time.sleep(DELAY)
+    tap(BACK_BTN)
+    tap(BACK_BTN)
 
 
 def generate_loadouts():
@@ -230,12 +222,12 @@ def generate_loadouts():
 
     logging.debug(f"number of loadouts: {nb_loadouts}")
 
-    return loadouts
+    return loadouts, nb_loadouts
 
 
 if __name__ == "__main__":
 
-    loadouts = generate_loadouts()
+    loadouts, _ = generate_loadouts()
     for ((model, sticker), wheel, hat, team, primary_color, secondary_color) in loadouts:
         print(f"next loadout: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
         newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)

@@ -25,6 +25,14 @@ DATA_FOLDER = "data/"
 UserList = list[tuple[int, str]]
 
 
+def tap(pos):
+    device.shell(f"input tap {pos[0]} {pos[1]}")
+
+
+def motion(pos, type):
+    device.shell(f"input motionevent {type} {pos[0]} {pos[1]}")
+
+
 def connect_adb() -> ppadb.device.Device:
     client: ppadb.client.Client = ppadb.client.Client(host=ADB_HOST, port=ADB_PORT)
     devices: list[ppadb.device.Device] = client.devices()
@@ -32,6 +40,7 @@ def connect_adb() -> ppadb.device.Device:
     devices_names: list[ppadb.command.serial.Serial] = list(map(lambda d: d.serial, devices))
     logging.debug(f"detected devices: {devices_names}")
 
+    global device
     if len(devices) == 1:
         device = devices[0]
     elif len(devices) == 0:
@@ -78,7 +87,6 @@ def start_game(device: ppadb.device.Device, users: UserList) -> None:
 
     logging.debug(f"selected user: {user_name}")
 
-    logging.debug("game activity started")
     device.shell(f"am start --user {user_id} -n {PSYONIX_PACKAGE_NAME}/{PSYONIX_ACTIVITY_NAME}")
     logging.debug("game activity started")
 
@@ -108,7 +116,7 @@ def startup() -> None:
     users = detect_game(device, users)
     start_game(device, users)
 
-    while not (detect_zen_mode(device) and detect_focus(device)):
+    while not (detect_zen_mode(device) or detect_focus(device)):
         time.sleep(DELAY_DETECT)
 
     time.sleep(DELAY_DETECT)
