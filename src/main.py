@@ -1,3 +1,4 @@
+import datetime
 import logging
 import sqlite3
 import time
@@ -72,7 +73,7 @@ if __name__ == "__main__":
         estimation = int((nb_loadouts - i) * sum(eta_list) / NB_ETA)
 
         logging.debug(
-            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({elapsed:.02f}s, ETA: {estimation}s): {loadout}"
+            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({elapsed:.02f}s, ETA: {datetime.timedelta(seconds=estimation)}): {loadout}"
         )
 
     # fermeture de la db sqlite3
