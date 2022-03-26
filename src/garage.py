@@ -78,7 +78,7 @@ def selectColor(team: int, primary_color: float, secondary_color: float):
 def rotate(x, y):
     motion(CENTER, "DOWN")
     motion(np.array(CENTER) + np.array((x, y)), "MOVE")
-    # time.sleep(0)
+    time.sleep(DELAY)
     motion(np.array(CENTER) + np.array((x, y)), "UP")
 
 
