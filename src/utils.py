@@ -1,7 +1,9 @@
 import logging
 import re
+import sqlite3
 import subprocess
 import time
+import uuid
 
 import ppadb.client
 import ppadb.command.serial
@@ -16,7 +18,9 @@ PSYONIX_ACTIVITY_NAME: str = "com.epicgames.ue4.SplashActivity"
 ADB_HOST: str = "127.0.0.1"
 ADB_PORT: int = 5037
 
-DETECT_DELAY: int = 1
+DELAY_DETECT: int = 1
+
+DATA_FOLDER = "data/"
 
 UserList = list[tuple[int, str]]
 
@@ -79,15 +83,6 @@ def start_game(device: ppadb.device.Device, users: UserList) -> None:
     logging.debug("game activity started")
 
 
-def set_notifications(device: ppadb.device.Device, enabled: bool) -> None:
-    device.shell(f"settings put global heads_up_notifications_enabled {int(enabled)}")
-
-    if enabled:
-        logging.debug("enabled heads up notifications")
-    else:
-        logging.debug("disabled heads up notifications")
-
-
 def detect_zen_mode(device: ppadb.device.Device) -> bool:
     return device.shell("settings get global zen_mode") != "1\n"
 
@@ -112,11 +107,30 @@ def startup() -> None:
     users = get_users(device)
     users = detect_game(device, users)
     start_game(device, users)
-    set_notifications(device, False)
 
     while not (detect_zen_mode(device) and detect_focus(device)):
-        time.sleep(DETECT_DELAY)
+        time.sleep(DELAY_DETECT)
 
-    time.sleep(DETECT_DELAY)
+    time.sleep(DELAY_DETECT)
 
     start_scrpy()
+
+
+def screenshot() -> uuid.UUID:
+    filename = uuid.uuid1()
+
+    subprocess.Popen(
+        f"ffmpeg -f video4linux2 -i /dev/video2 -frames:v 1 {DATA_FOLDER}/{filename}.jpg".split(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+
+    return filename
+
+
+def insert(database: sqlite3.Connection, uuid: uuid.UUID, loadout: tuple, x_rotation: int, y_rotation: int) -> None:
+    ((model, sticker), wheel, hat, team, primary_color, secondary_color) = loadout
+    database.execute(
+        f"INSERT INTO data VALUES ('{uuid}',{model},{team},{primary_color},{secondary_color},{hat},{sticker},{wheel},{x_rotation},{y_rotation})"
+    )
+    database.commit()
