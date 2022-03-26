@@ -92,7 +92,7 @@ def start_game(device: ppadb.device.Device, users: UserList) -> None:
 
 
 def is_zen_mode(device: ppadb.device.Device) -> bool:
-    return device.shell("settings get global zen_mode") != "1\n"
+    return device.shell("settings get global zen_mode") == "1\n"
 
 
 def is_focused(device: ppadb.device.Device) -> bool:
