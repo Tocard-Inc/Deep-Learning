@@ -36,7 +36,7 @@ if __name__ == "__main__":
     digits_loadout = len(str(nb_loadouts))
 
     # initialisation de la liste au calcul de l'ETA
-    eta_list = [2.0 for _ in range(NB_ETA)]
+    eta_list = [10.0 for _ in range(NB_ETA)]
 
     # boucle principale sur les loadouts
     for (i, loadout) in enumerate(loadouts):
@@ -71,9 +71,10 @@ if __name__ == "__main__":
         elapsed = time.time() - elapsed
         eta_list[i % NB_ETA] = elapsed
         estimation = int((nb_loadouts - i) * sum(eta_list) / NB_ETA)
+        formated_estimation = datetime.timedelta(seconds=estimation)
 
         logging.debug(
-            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({elapsed:.02f}s, ETA: {datetime.timedelta(seconds=estimation)}): {loadout}"
+            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({elapsed:.02f}s, ETA: {formated_estimation}): {loadout}"
         )
 
     # fermeture de la db sqlite3
