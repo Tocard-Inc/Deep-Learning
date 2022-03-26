@@ -4,7 +4,7 @@ import time
 
 import numpy as np
 
-from utils import motion, tap
+from utils import motion, startup, tap
 
 CENTER = (1000, 500)
 
@@ -126,6 +126,7 @@ def selectModel(model: int):
     if n > 0:
         motion(CENTER, "DOWN")
         motion(np.array(CENTER) + n * np.array((-1700, 0)), "MOVE")
+        time.sleep(DELAY)
         motion(np.array(CENTER) + n * np.array((-1700, 0)), "UP")
         tap(SELECT_CAR_BTN)
     elif n < 0:
@@ -133,6 +134,7 @@ def selectModel(model: int):
         for _ in range(-n):
             motion(CENTER, "DOWN")
             motion(np.array(CENTER) + np.array((1000, 0)), "MOVE")
+            time.sleep(DELAY)
             motion(np.array(CENTER) + np.array((1000, 0)), "UP")
             time.sleep(1)
         tap(SELECT_CAR_BTN)
@@ -229,7 +231,8 @@ def generate_loadouts():
 
 if __name__ == "__main__":
 
+    startup()
     loadouts, _ = generate_loadouts()
-    for ((model, sticker), wheel, hat, team, primary_color, secondary_color) in loadouts:
-        print(f"next loadout: {((model, sticker), wheel, hat, team, primary_color, secondary_color)}")
+    for (wheel, (model, sticker), hat, team, primary_color, secondary_color) in loadouts:
+        print(f"next loadout: {(wheel, (model, sticker), hat, team, primary_color, secondary_color)}")
         newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
