@@ -155,7 +155,6 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
     # select new model, if necessary
     if model != old_model:
         selectModel(model)
-        old_model = model
         time.sleep(DELAY)
 
     # goto loadout editor
@@ -165,29 +164,32 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
     # select sticker, if necessary
     if sticker != old_sticker or model != old_model:
         selectItem(STICKER_MENU_BTN, sticker)
-        old_sticker = sticker
         time.sleep(DELAY)
 
     # select wheel, if necessary
     if wheel != old_wheel or model != old_model:
         selectItem(WHEEL_MENU_BTN, wheel)
-        old_wheel = wheel
         time.sleep(DELAY)
 
     # select hat, if necessary
     if hat != old_hat or model != old_model:
         selectItem(HAT_MENU_BTN, hat)
-        old_hat = hat
         time.sleep(DELAY)
 
     # select color, if necessary
     if team != old_team or primary_color != old_primary_color[team] or secondary_color != old_secondary_color[team] or model != old_model:
         selectColor(team, primary_color, secondary_color)
-        old_team = team
-        old_primary_color[old_team] = primary_color
-        old_secondary_color[old_team] = secondary_color
         time.sleep(DELAY)
 
+    # update old values
+    old_model = model
+    old_sticker = sticker
+    old_wheel = wheel
+    old_hat = hat
+    old_team = team
+    old_primary_color[old_team] = primary_color
+    old_secondary_color[old_team] = secondary_color
+    
     # goto main menu
     tap(BACK_BTN)
     time.sleep(DELAY)
@@ -195,6 +197,7 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
     time.sleep(DELAY)
     tap(BACK_BTN)
     tap(BACK_BTN)
+    
 
 
 def generate_loadouts():
