@@ -111,6 +111,9 @@ def start_scrpy() -> None:
 
 
 def startup() -> None:
+    
+    subprocess.call(("sudo modprobe v4l2loopback").split())
+    
     device = connect_adb()
     users = get_users(device)
     users = detect_game(device, users)
