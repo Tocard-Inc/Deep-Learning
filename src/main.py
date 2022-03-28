@@ -10,7 +10,7 @@ NB_ETA = 25
 
 NB_ROTATIONS = 10
 
-N_START = 0
+N_START = 5245
 N_STOP = 0
 
 DELAY_TRANSITION = 0.3
@@ -72,9 +72,10 @@ if __name__ == "__main__":
         eta_list[i % NB_ETA] = elapsed
         estimation = int((nb_loadouts - i) * sum(eta_list) / NB_ETA)
         formated_estimation = datetime.timedelta(seconds=estimation)
+        percentage_done = i / nb_loadouts * 100
 
         logging.debug(
-            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({elapsed:.02f}s, ETA: {formated_estimation}): {loadout}"
+            f"loadout {str(i).zfill(digits_loadout)}/{nb_loadouts} ({percentage_done:02.02f}%) ({elapsed:.02f}s, ETA: {formated_estimation}): {loadout}"
         )
 
     # fermeture de la db sqlite3
