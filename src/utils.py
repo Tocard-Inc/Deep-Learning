@@ -11,6 +11,7 @@ import ppadb.device
 
 REGEX_USER: re.Pattern = re.compile(r"UserInfo\{([0-9]*):([a-zA-Z ]*):.*")
 REGEX_FOCUS: re.Pattern = re.compile(r"mCurrentFocus.*com.Psyonix.RL2D.*")
+REGEX_V4L2: re.Pattern = re.compile(r"v4l2loopback ")
 
 PSYONIX_PACKAGE_NAME: str = "com.Psyonix.RL2D"
 PSYONIX_ACTIVITY_NAME: str = "com.epicgames.ue4.SplashActivity"
@@ -102,6 +103,13 @@ def is_focused(device: ppadb.device.Device) -> bool:
     return result is not None
 
 
+def is_v4l2_loaded() -> bool:
+    lsmod = str(subprocess.check_output("lsmod"))
+    result = REGEX_V4L2.search(lsmod)
+
+    return result is not None
+
+
 def start_scrpy() -> None:
     subprocess.Popen(
         "scrcpy --v4l2-sink=/dev/video2 --disable-screensaver -N -m 512".split(),
@@ -119,7 +127,7 @@ def startup() -> None:
     users = detect_game(device, users)
     start_game(device, users)
 
-    while not (is_zen_mode(device) and is_focused(device)):
+    while not (is_zen_mode(device) and is_focused(device) and is_v4l2_loaded()):
         time.sleep(DELAY_DETECT)
 
     time.sleep(DELAY_DETECT)
