@@ -47,14 +47,14 @@ Comme nous possédons un grand nombre d'images et comme celle-ci sont réliées 
 ![](demo_datas.gif)
 
 | Rotation |         Octane          |       AfterShock        |        Werewolf         |        Breakout         |
-| :------- | :---------------------: | :---------------------: | :---------------------: | :---------------------: |
-| 0        | ![](demo_datas/0_0.jpg) | ![](demo_datas/1_0.jpg) | ![](demo_datas/2_0.jpg) | ![](demo_datas/3_0.jpg) |
-| 1        | ![](demo_datas/0_1.jpg) | ![](demo_datas/1_1.jpg) | ![](demo_datas/2_1.jpg) | ![](demo_datas/3_1.jpg) |
-| 2        | ![](demo_datas/0_2.jpg) | ![](demo_datas/1_2.jpg) | ![](demo_datas/2_2.jpg) | ![](demo_datas/3_2.jpg) |
-| 3        | ![](demo_datas/0_3.jpg) | ![](demo_datas/1_3.jpg) | ![](demo_datas/2_3.jpg) | ![](demo_datas/3_3.jpg) |
-| 4        | ![](demo_datas/0_4.jpg) | ![](demo_datas/1_4.jpg) | ![](demo_datas/2_4.jpg) | ![](demo_datas/3_4.jpg) |
-| 5        | ![](demo_datas/0_5.jpg) | ![](demo_datas/1_5.jpg) | ![](demo_datas/2_5.jpg) | ![](demo_datas/3_5.jpg) |
-| 6        | ![](demo_datas/0_6.jpg) | ![](demo_datas/1_6.jpg) | ![](demo_datas/2_6.jpg) | ![](demo_datas/3_6.jpg) |
-| 7        | ![](demo_datas/0_7.jpg) | ![](demo_datas/1_7.jpg) | ![](demo_datas/2_7.jpg) | ![](demo_datas/3_7.jpg) |
-| 8        | ![](demo_datas/0_8.jpg) | ![](demo_datas/1_8.jpg) | ![](demo_datas/2_8.jpg) | ![](demo_datas/3_8.jpg) |
-| 9        | ![](demo_datas/0_9.jpg) | ![](demo_datas/1_9.jpg) | ![](demo_datas/2_9.jpg) | ![](demo_datas/3_9.jpg) |
+| :------: | :---------------------: | :---------------------: | :---------------------: | :---------------------: |
+|    0     | ![](demo_datas/0_0.jpg) | ![](demo_datas/1_0.jpg) | ![](demo_datas/2_0.jpg) | ![](demo_datas/3_0.jpg) |
+|    1     | ![](demo_datas/0_1.jpg) | ![](demo_datas/1_1.jpg) | ![](demo_datas/2_1.jpg) | ![](demo_datas/3_1.jpg) |
+|    2     | ![](demo_datas/0_2.jpg) | ![](demo_datas/1_2.jpg) | ![](demo_datas/2_2.jpg) | ![](demo_datas/3_2.jpg) |
+|    3     | ![](demo_datas/0_3.jpg) | ![](demo_datas/1_3.jpg) | ![](demo_datas/2_3.jpg) | ![](demo_datas/3_3.jpg) |
+|    4     | ![](demo_datas/0_4.jpg) | ![](demo_datas/1_4.jpg) | ![](demo_datas/2_4.jpg) | ![](demo_datas/3_4.jpg) |
+|    5     | ![](demo_datas/0_5.jpg) | ![](demo_datas/1_5.jpg) | ![](demo_datas/2_5.jpg) | ![](demo_datas/3_5.jpg) |
+|    6     | ![](demo_datas/0_6.jpg) | ![](demo_datas/1_6.jpg) | ![](demo_datas/2_6.jpg) | ![](demo_datas/3_6.jpg) |
+|    7     | ![](demo_datas/0_7.jpg) | ![](demo_datas/1_7.jpg) | ![](demo_datas/2_7.jpg) | ![](demo_datas/3_7.jpg) |
+|    8     | ![](demo_datas/0_8.jpg) | ![](demo_datas/1_8.jpg) | ![](demo_datas/2_8.jpg) | ![](demo_datas/3_8.jpg) |
+|    9     | ![](demo_datas/0_9.jpg) | ![](demo_datas/1_9.jpg) | ![](demo_datas/2_9.jpg) | ![](demo_datas/3_9.jpg) |
