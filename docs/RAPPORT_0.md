@@ -1,7 +1,7 @@
-# Model classification in Rocket League Sideswipe
+# Classification dans Rocket League Sideswipe
 
-Laurent Fainsin --
-Damien Guillotin --
+Laurent Fainsin &mdash;
+Damien Guillotin &mdash;
 Pierre-Eliot Jourdan
 
 Lien vers notre [dépot gitlab](https://git.inpt.fr/tocard-inc/enseeiht/projet-classification)
@@ -12,13 +12,13 @@ Le but de ce projet est de permettre la reconnaissance (classification) de voitu
 
 ## Méthodolgie d'acquisition du dataset
 
-Pour acquérir les 400 000 images de notre dataset, nous avons simplement écrit un script capable d'automatiser la customisation des modèles ainsi que la prise de screenshots. Il nous aura fallu environ 18 heures pour constituer notre dataset.
+Pour acquérir les quelque 400 000 images de notre dataset, nous avons simplement écrit un script capable d'automatiser la customisation des modèles ainsi que la prise de screenshots. Il nous aura fallu environ 18 heures pour constituer notre dataset.
 
-Notre dataset est un dossier contenant toutes nos images et une base de données sqlite3 faisant le lien entre les noms de nos screenshots (des uuids) et les paramètre de la voiture dans l'image.
+Notre dataset est un dossier contenant toutes nos images et une base de données sqlite3 faisant le lien entre les noms de nos screenshots (des uuids) et les paramètres de la voiture dans l'image.
 
-Par exemple `ec7d32da-ad24-11ec-813b-e0d4e8390134.jpg` correspond au modèle de voiture 2 (la werewolf) à la team 0 (les bleus), à la couleur primaire 50%, à la couleur secondaire 0%, au chapeau n°12 (<insérer nom chapeau>), au sticker n°1 (<insérer nom sticker>), à la roue n°4 (<insérer nom roue>) et à la 3ème rotation.
+Par exemple `ec7d32da-ad24-11ec-813b-e0d4e8390134.jpg` correspond au modèle de voiture 2 (la werewolf) à la team 0 (les bleus), à la couleur primaire 50%, à la couleur secondaire 0%, au chapeau n°12 (le Rasta), au sticker n°1 (le Kana), à la roue n°4 (l'Helicoprion) et à la 3ème rotation.
 
-Voici l'image associée :
+Voici l'image associée:
 
 ![](image_methodo.jpg)
 
@@ -36,11 +36,11 @@ Notre objectif final serait d'utiliser l'augmentation pour obtenir plus d'un mil
 
 ## Pronostic
 
-Si l'on décide d'évaluer le réseau sur des voitures avec une rotation qui est la même que lors de l'aquisition des données, le résultat devrait être plus que correct mais si l'on évalue le réseau sur une rotation différente, c'est la que les problèmes peuvent arriver, il se peut que l'on sur-apprenne la discretion de nos rotations.
+Si l'on décide d'évaluer le réseau sur des voitures avec une rotation qui est la même que lors de l'acquisition des données, le résultat devrait être plus que correct mais si l'on évalue le réseau sur une rotation différente, c'est là que les problèmes peuvent arriver, il se peut que l'on sur-apprenne la discrétion de nos rotations.
 
 ## Chargement de nos données
 
-Comme nous possédons un grand nombre d'images et comme celle-ci sont réliées via un csv, nous allons devoir utiliser une [structure spéciale](https://www.tensorflow.org/tutorials/load_data/csv#using_tfdata) de Tensorflow pour charger les images via leur association dans le csv, et aussi pour permettre de ne pas tout charger en mémoire (car notre dataset sera très probablement de taille supérieur à la RAM de nos machines).
+Comme nous possédons un grand nombre d'images et comme celles-ci sont réliées via un csv/sqlite3, nous allons devoir utiliser une [structure spéciale](https://www.tensorflow.org/tutorials/load_data/csv#using_tfdata) de Tensorflow pour charger les images via leur association dans le csv/sqlite3, et aussi pour permettre de ne pas tout charger en mémoire (car notre dataset sera très probablement de taille supérieur à la RAM de nos machines).
 
 ## Exemple du dataset
 
