@@ -28,7 +28,7 @@ Nous pensons dans un premier temps fractionner notre dataset de la manière suiv
 
 | Train | Test  | Validation |
 | :---: | :---: | :--------: |
-|  70   |  15   |     15     |
+|  70%  |  15%  |    15%     |
 
 Nous utiliserons les méthodes fournies par Tensorflow pour split notre dataset via ces proportions.
 
