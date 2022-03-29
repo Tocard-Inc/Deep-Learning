@@ -7,7 +7,7 @@ Damien Guillotin &mdash;
 Pierre-Eliot Jourdan
 </center>
 
-Lien vers notre [dépot GitHub](git@github.com:Tocard-Inc/Deep-Learning.git).
+Lien vers notre [dépot GitHub](https://github.com/Tocard-Inc/Deep-Learning).
 
 Lien vers notre [dataset](https://fainsil.users.inpt.fr/content/DL/dataset.zip).
 
