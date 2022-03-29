@@ -24,9 +24,15 @@ Voici l'image associée :
 
 ## Méthodologie
 
-* Description de votre méthodologie pour partitionner les images en ensembles d’entraı̂nement, de validation et de test.
+Nous pensons dans un premier temps fractionner notre dataset de la manière suivante:
 
--> Voir la doc de tensorflow.
+| Train | Test  | Validation |
+| :---: | :---: | :--------: |
+|  70   |  15   |     15     |
+
+Nous utiliserons les méthodes fournies par Tensorflow pour split notre dataset via ces proportions.
+
+Notre objectif final serait d'utiliser l'augmentation pour obtenir plus d'un million d'images.
 
 ## Pronostic
 
@@ -34,7 +40,7 @@ Si l'on décide d'évaluer le réseau sur des voitures avec une rotation qui est
 
 ## Chargement de nos données
 
-* Script de chargement de vos données.
+Comme nous possédons un grand nombre d'images et comme celle-ci sont réliées via un csv, nous allons devoir utiliser une [structure spéciale](https://www.tensorflow.org/tutorials/load_data/csv#using_tfdata) de Tensorflow pour charger les images via leur association dans le csv, et aussi pour permettre de ne pas tout charger en mémoire (car notre dataset sera très probablement de taille supérieur à la RAM de nos machines).
 
 ## Exemple du dataset
 
