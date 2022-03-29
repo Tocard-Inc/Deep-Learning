@@ -1,10 +1,15 @@
+<center>
+
 # Classification dans Rocket League Sideswipe
 
 Laurent Fainsin &mdash;
 Damien Guillotin &mdash;
 Pierre-Eliot Jourdan
+</center>
 
-Lien vers notre [dépot gitlab](https://git.inpt.fr/tocard-inc/enseeiht/projet-classification)
+Lien vers notre [dépot gitlab](https://git.inpt.fr/tocard-inc/enseeiht/projet-classification).
+
+Lien vers notre [dataset](https://fainsil.users.inpt.fr/content/DL/dataset.zip).
 
 ## Description
 

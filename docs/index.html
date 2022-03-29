@@ -1,9 +1,35 @@
-<h1 id="model-classification-in-rocket-league-sideswipe">Model
-classification in Rocket League Sideswipe</h1>
-<p>Laurent Fainsin Damien Guillotin Pierre-Eliot Jourdan</p>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>rapport</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="bigstone.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<center>
+<h1 id="classification-dans-rocket-league-sideswipe">Classification dans
+Rocket League Sideswipe</h1>
+Laurent Fainsin — Damien Guillotin — Pierre-Eliot Jourdan
+</center>
 <p>Lien vers notre <a
 href="https://git.inpt.fr/tocard-inc/enseeiht/projet-classification">dépot
-gitlab</a></p>
+gitlab</a>.</p>
+<p>Lien vers notre <a
+href="https://fainsil.users.inpt.fr/content/DL/dataset.zip">dataset</a>.</p>
 <h2 id="description">Description</h2>
 <p>Le but de ce projet est de permettre la reconnaissance
 (classification) de voitures dans le jeu vidéo mobile Rocket League
@@ -11,36 +37,57 @@ Sideswipe, et ce peu importe les accessoires équipés tels que les roues,
 les chapeaux, les stickers, les couleurs…</p>
 <h2 id="méthodolgie-dacquisition-du-dataset">Méthodolgie d’acquisition
 du dataset</h2>
-<p>Pour acquérir les 400 000 images de notre dataset, nous avons
+<p>Pour acquérir les quelque 400 000 images de notre dataset, nous avons
 simplement écrit un script capable d’automatiser la customisation des
 modèles ainsi que la prise de screenshots. Il nous aura fallu environ 18
 heures pour constituer notre dataset.</p>
 <p>Notre dataset est un dossier contenant toutes nos images et une base
 de données sqlite3 faisant le lien entre les noms de nos screenshots
-(des uuids) et les paramètre de la voiture dans l’image.</p>
+(des uuids) et les paramètres de la voiture dans l’image.</p>
 <p>Par exemple <code>ec7d32da-ad24-11ec-813b-e0d4e8390134.jpg</code>
 correspond au modèle de voiture 2 (la werewolf) à la team 0 (les bleus),
 à la couleur primaire 50%, à la couleur secondaire 0%, au chapeau n°12
-(<insérer nom chapeau>), au sticker n°1 (<insérer nom sticker>), à la
-roue n°4 (<insérer nom roue>) et à la 3ème rotation.</p>
-<p>Voici l’image associée :</p>
+(le Rasta), au sticker n°1 (le Kana), à la roue n°4 (l’Helicoprion) et à
+la 3ème rotation.</p>
+<p>Voici l’image associée:</p>
 <p><img src="image_methodo.jpg" /></p>
 <h2 id="méthodologie">Méthodologie</h2>
-<ul class="incremental">
-<li>Description de votre méthodologie pour partitionner les images en
-ensembles d’entraı̂nement, de validation et de test.</li>
-</ul>
-<p>-&gt; Voir la doc de tensorflow.</p>
+<p>Nous pensons dans un premier temps fractionner notre dataset de la
+manière suivante:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Train</th>
+<th style="text-align: center;">Test</th>
+<th style="text-align: center;">Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">70%</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: center;">15%</td>
+</tr>
+</tbody>
+</table>
+<p>Nous utiliserons les méthodes fournies par Tensorflow pour split
+notre dataset via ces proportions.</p>
+<p>Notre objectif final serait d’utiliser l’augmentation pour obtenir
+plus d’un million d’images.</p>
 <h2 id="pronostic">Pronostic</h2>
 <p>Si l’on décide d’évaluer le réseau sur des voitures avec une rotation
-qui est la même que lors de l’aquisition des données, le résultat
+qui est la même que lors de l’acquisition des données, le résultat
 devrait être plus que correct mais si l’on évalue le réseau sur une
-rotation différente, c’est la que les problèmes peuvent arriver, il se
-peut que l’on sur-apprenne la discretion de nos rotations.</p>
+rotation différente, c’est là que les problèmes peuvent arriver, il se
+peut que l’on sur-apprenne la discrétion de nos rotations.</p>
 <h2 id="chargement-de-nos-données">Chargement de nos données</h2>
-<ul class="incremental">
-<li>Script de chargement de vos données.</li>
-</ul>
+<p>Comme nous possédons un grand nombre d’images et comme celles-ci sont
+réliées via un csv/sqlite3, nous allons devoir utiliser une <a
+href="https://www.tensorflow.org/tutorials/load_data/csv#using_tfdata">structure
+spéciale</a> de Tensorflow pour charger les images via leur association
+dans le csv/sqlite3, et aussi pour permettre de ne pas tout charger en
+mémoire (car notre dataset sera très probablement de taille supérieur à
+la RAM de nos machines).</p>
 <h2 id="exemple-du-dataset">Exemple du dataset</h2>
 <p><img src="demo_datas.gif" /></p>
 <table>
@@ -53,7 +100,7 @@ peut que l’on sur-apprenne la discretion de nos rotations.</p>
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Rotation</th>
+<th style="text-align: center;">Rotation</th>
 <th style="text-align: center;">Octane</th>
 <th style="text-align: center;">AfterShock</th>
 <th style="text-align: center;">Werewolf</th>
@@ -62,70 +109,70 @@ peut que l’on sur-apprenne la discretion de nos rotations.</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">0</td>
+<td style="text-align: center;">0</td>
 <td style="text-align: center;"><img src="demo_datas/0_0.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_0.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_0.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_0.jpg" /></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1</td>
+<td style="text-align: center;">1</td>
 <td style="text-align: center;"><img src="demo_datas/0_1.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_1.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_1.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_1.jpg" /></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">2</td>
+<td style="text-align: center;">2</td>
 <td style="text-align: center;"><img src="demo_datas/0_2.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_2.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_2.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_2.jpg" /></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">3</td>
+<td style="text-align: center;">3</td>
 <td style="text-align: center;"><img src="demo_datas/0_3.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_3.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_3.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_3.jpg" /></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">4</td>
+<td style="text-align: center;">4</td>
 <td style="text-align: center;"><img src="demo_datas/0_4.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_4.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_4.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_4.jpg" /></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">5</td>
+<td style="text-align: center;">5</td>
 <td style="text-align: center;"><img src="demo_datas/0_5.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_5.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_5.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_5.jpg" /></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">6</td>
+<td style="text-align: center;">6</td>
 <td style="text-align: center;"><img src="demo_datas/0_6.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_6.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_6.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_6.jpg" /></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">7</td>
+<td style="text-align: center;">7</td>
 <td style="text-align: center;"><img src="demo_datas/0_7.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_7.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_7.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_7.jpg" /></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">8</td>
+<td style="text-align: center;">8</td>
 <td style="text-align: center;"><img src="demo_datas/0_8.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_8.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_8.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/3_8.jpg" /></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">9</td>
+<td style="text-align: center;">9</td>
 <td style="text-align: center;"><img src="demo_datas/0_9.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/1_9.jpg" /></td>
 <td style="text-align: center;"><img src="demo_datas/2_9.jpg" /></td>
@@ -133,3 +180,5 @@ peut que l’on sur-apprenne la discretion de nos rotations.</p>
 </tr>
 </tbody>
 </table>
+</body>
+</html>
