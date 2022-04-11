@@ -4,16 +4,16 @@ authors = [
   "Damien Guillotin <damien.guillotin@etu.inp-n7.fr>",
   "Pierre-Eliot Jourdan <pierreliot.jourdan@etu.inp-n7.fr>",
 ]
-description = ""
+description = "Rocket League sideswipe image classification deep learning project"
 license = "MIT"
-name = "projet"
+name = "DeepSwipe"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
+Pillow = "^9.0.1"
+numpy = "^1.22.3"
 pure-python-adb = "^0.3.0-alpha.0"
 python = "^3.10"
-numpy = "^1.22.3"
-Pillow = "^9.0.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1"
