@@ -2,7 +2,7 @@
 mkdir /tmp/deepl
 cd /tmp/deepl
 
-# pour CUDA tensorflow
+# linking CUDA pour tensorflow (pas du tout volé à matlab)
 export LD_LIBRARY_PATH=/applications/matlabr2021b/bin/glnxa64/:$LD_LIBRARY_PATH
 
 # on installe un environnement virtuel python
