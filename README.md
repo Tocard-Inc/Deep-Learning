@@ -51,7 +51,7 @@ Please use [conventional commits](https://www.conventionalcommits.org/).
 ## License
 
 Distributed under the [MIT](https://choosealicense.com/licenses/mit/) license.
-See [`LICENSE`](https://git.inpt.fr/fainsil/booplaysgba/-/blob/master/LICENSE) for more information.
+See [`LICENSE`](https://github.com/Tocard-Inc/Deep-Learning/blob/master/LICENSE) for more information.
 
 ## Contact
 
