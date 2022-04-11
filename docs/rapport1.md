@@ -1,11 +1,10 @@
-<center>
-
 # Classification dans Rocket League Sideswipe
 
+<p align="center">
 Laurent Fainsin &mdash;
 Damien Guillotin &mdash;
 Pierre-Eliot Jourdan
-</center>
+</p>
 
 Lien vers notre [dépot GitHub](https://github.com/Tocard-Inc/Deep-Learning).
 
@@ -25,7 +24,9 @@ Par exemple `ec7d32da-ad24-11ec-813b-e0d4e8390134.jpg` correspond au modèle de 
 
 Voici l'image associée:
 
-![](image_methodo.jpg)
+<div align="center">
+  <img src="image_methodo.jpg" />
+</div>
 
 ## Méthodologie
 
@@ -49,7 +50,9 @@ Comme nous possédons un grand nombre d'images et comme celles-ci sont réliées
 
 ## Exemple du dataset
 
-![](demo_datas.gif)
+<div align="center">
+  <img src="demo_datas.gif" />
+</div>
 
 | Rotation |         Octane          |       AfterShock        |        Werewolf         |        Breakout         |
 | :------: | :---------------------: | :---------------------: | :---------------------: | :---------------------: |
