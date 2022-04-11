@@ -27,12 +27,12 @@ SECONDARY_COLOR_SLIDER = (380, 380 + TEAM_OFFSET)
 ITEM_X = (200, 450, 700)
 ITEM_Y = (300, 580, 860)
 
-NB_STICKERS = (3, 3, 0, 0)
+NB_STICKERS = (0, 0, 2, 4)
 NB_WHEELS = 23
 NB_HATS = 23
 NB_TEAMS = 2
 
-DELAY = 0.02
+DELAY = 0.1
 
 NB_PRIMARY_COLORS = 3
 NB_SECONDARY_COLORS = 1
@@ -179,7 +179,12 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
         time.sleep(DELAY)
 
     # select color, if necessary
-    if team != old_team or primary_color != old_primary_color[team] or secondary_color != old_secondary_color[team] or model != old_model:
+    if (
+        team != old_team
+        or primary_color != old_primary_color[team]
+        or secondary_color != old_secondary_color[team]
+        or model != old_model
+    ):
         selectColor(team, primary_color, secondary_color)
         time.sleep(DELAY)
 
@@ -191,7 +196,7 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
     old_team = team
     old_primary_color[old_team] = primary_color
     old_secondary_color[old_team] = secondary_color
-    
+
     # goto main menu
     tap(BACK_BTN)
     time.sleep(DELAY)
@@ -199,7 +204,6 @@ def newCar(model: int, sticker: int, wheel: int, hat: int, team: int, primary_co
     time.sleep(DELAY)
     tap(BACK_BTN)
     tap(BACK_BTN)
-    
 
 
 def generate_loadouts():

@@ -10,7 +10,7 @@ NB_ETA = 25
 
 NB_ROTATIONS = 10
 
-N_START = 7023
+N_START = 0
 N_STOP = 0
 
 DELAY_TRANSITION = 0.3
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     for (i, loadout) in enumerate(loadouts):
 
         # Sauter les N_START premiers
-        if N_START and i < N_START:
+        if N_START and i <= N_START:
             continue
 
         # Skip après N_STOP loadouts
