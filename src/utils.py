@@ -118,7 +118,7 @@ def start_scrpy() -> None:
     )
 
 
-def startup() -> None:
+def startup(need_focus=True) -> None:
     
     subprocess.call(("sudo modprobe v4l2loopback").split())
     
@@ -127,7 +127,7 @@ def startup() -> None:
     users = detect_game(device, users)
     start_game(device, users)
 
-    while not (is_zen_mode(device) and is_focused(device) and is_v4l2_loaded()):
+    while need_focus and not (is_zen_mode(device) and is_focused(device) and is_v4l2_loaded()):
         time.sleep(DELAY_DETECT)
 
     time.sleep(DELAY_DETECT)
@@ -135,11 +135,12 @@ def startup() -> None:
     start_scrpy()
 
 
-def screenshot() -> uuid.UUID:
-    filename = uuid.uuid1()
+def screenshot(filename=None, folder=DATA_FOLDER) -> uuid.UUID:
+    if filename == None:
+        filename = uuid.uuid1()
 
     subprocess.Popen(
-        f"ffmpeg -f video4linux2 -i /dev/video2 -frames:v 1 -filter:v crop=400:150:45:30 {DATA_FOLDER}/{filename}.jpg".split(),
+        f"ffmpeg -f video4linux2 -i /dev/video2 -frames:v 1 -filter:v crop=400:150:45:30 {folder}/{filename}.jpg".split(),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )

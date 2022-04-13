@@ -11,5 +11,5 @@
       "source.organizeImports": true
     }
   },
-  "jupyter.jupyterServerType": "remote"
+  "jupyter.jupyterServerType": "local"
 }
