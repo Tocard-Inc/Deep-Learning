@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import sqlite3
 import subprocess
@@ -119,9 +120,9 @@ def start_scrpy() -> None:
 
 
 def startup(need_focus=True) -> None:
-    
+
     subprocess.call(("sudo modprobe v4l2loopback").split())
-    
+
     device = connect_adb()
     users = get_users(device)
     users = detect_game(device, users)
@@ -140,7 +141,7 @@ def screenshot(filename=None, folder=DATA_FOLDER) -> uuid.UUID:
         filename = uuid.uuid1()
 
     subprocess.Popen(
-        f"ffmpeg -f video4linux2 -i /dev/video2 -frames:v 1 -filter:v crop=400:150:45:30 {folder}/{filename}.jpg".split(),
+        f"ffmpeg -f video4linux2 -i /dev/video2 -frames:v 1 -filter:v crop=400:150:45:30 -y {folder}/{filename}.jpg".split(),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
     )

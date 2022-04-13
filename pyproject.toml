@@ -13,7 +13,8 @@ version = "0.1.0"
 Pillow = "^9.0.1"
 numpy = "^1.22.3"
 pure-python-adb = "^0.3.0-alpha.0"
-python = "^3.10"
+python = ">=3.10,<3.11"
+tensorflow = "^2.8.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1"
