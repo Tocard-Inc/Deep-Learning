@@ -27,15 +27,15 @@ SECONDARY_COLOR_SLIDER = (380, 380 + TEAM_OFFSET)
 ITEM_X = (200, 450, 700)
 ITEM_Y = (300, 580, 860)
 
-NB_STICKERS = (0, 0, 2, 4)
+NB_STICKERS = (3, 3, 8, 0, 3, 3, 0, 3)
 NB_WHEELS = 23
 NB_HATS = 23
 NB_TEAMS = 2
 
 DELAY = 0.1
 
-NB_PRIMARY_COLORS = 3
-NB_SECONDARY_COLORS = 1
+NB_PRIMARY_COLORS = 10
+NB_SECONDARY_COLORS = 10
 
 old_model = None
 old_sticker = None
@@ -235,8 +235,21 @@ def generate_loadouts():
 
 if __name__ == "__main__":
 
-    startup()
-    loadouts, _ = generate_loadouts()
-    for (wheel, (model, sticker), hat, team, primary_color, secondary_color) in loadouts:
+    startup(need_focus=False)
+
+    running = True
+
+    while running:
+        
+        loadouts, nb_loadouts = generate_loadouts()
+        
+        # skip some cars
+        skip = np.random.randint(0, nb_loadouts)
+        for _ in range(skip):
+            next(loadouts)
+
+        input("Press Enter to continue...")
+
+        (wheel, (model, sticker), hat, team, primary_color, secondary_color) = next(loadouts)
         print(f"next loadout: {(wheel, (model, sticker), hat, team, primary_color, secondary_color)}")
         newCar(model, sticker, wheel, hat, team, primary_color, secondary_color)
