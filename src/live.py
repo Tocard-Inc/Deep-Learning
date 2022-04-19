@@ -1,3 +1,4 @@
+import os
 import subprocess
 import time
 
@@ -29,7 +30,7 @@ X = np.zeros((1, RESIZED_SIZE[1], RESIZED_SIZE[0], RESIZED_SIZE[2]))
 while running:
     utils.screenshot(filename="live", folder=MODELS_PATH)
 
-    time.sleep(1)
+    # time.sleep(1)
 
     # Lecture de l'image
     img = PIL.Image.open(MODELS_PATH + "/live.jpg")
@@ -43,8 +44,7 @@ while running:
 
     index = int(np.dot(Y, np.array([0, 1, 2, 3]).T))
 
-    print()
-    print()
+    os.system("clear")
     print(f"Model detected : {LABELS[index]}")
     for i in range(len(LABELS)):
         print(f"\t- {LABELS[i]} {Y[0,i]:.03f}")
