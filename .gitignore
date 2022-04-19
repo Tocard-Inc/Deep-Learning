@@ -5,3 +5,4 @@ data*
 **/__pycache__
 dataset*.db
 !dataset.example.db
+models/live.jpg
