@@ -14,4 +14,4 @@ python -m pip install pip tensorflow matplotlib numpy sklearn ipykernel jupyterl
 python -m ipykernel install --user --name=.env
 
 # on lance un notebook
-jupyter-lab --no-browser --ip 0.0.0.0 --port 8888
+jupyter-lab --no-browser --ip 0.0.0.0 --port 8888 --NotebookApp.token='tokendemerde'
