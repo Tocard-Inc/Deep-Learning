@@ -1,5 +1,5 @@
 # on se place dans les eaux internationales, loin des quotas
-mkdir /tmp/deepl
+mkdir /tmp/deepl --mode=777
 cd /tmp/deepl
 
 # linking CUDA pour tensorflow (pas du tout volé à matlab)
