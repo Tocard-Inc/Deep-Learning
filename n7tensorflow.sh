@@ -8,7 +8,7 @@ export LD_LIBRARY_PATH=/applications/matlabr2021b/bin/glnxa64/:$LD_LIBRARY_PATH
 # on installe un environnement virtuel python
 python3 -m venv .env
 source .env/bin/activate
-python -m pip install pip tensorflow matplotlib numpy sklearn ipykernel jupyterlab
+python -m pip install pip tensorflow matplotlib numpy sklearn ipykernel jupyterlab pandas pretty_confusion_matrix
 
 # on inscrit le venv dans la liste des kernels ipython
 python -m ipykernel install --user --name=.env
