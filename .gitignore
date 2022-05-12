@@ -1,8 +1,12 @@
 .venv
 .mypy_cache
-data*
-!database.py
 **/__pycache__
+
+data/
+dataset_rot/
+*.zip
+
 dataset*.db
 !dataset.example.db
+
 models/live.jpg
